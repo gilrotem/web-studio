@@ -1,0 +1,44 @@
+/* <project> — design tokens
+   Born in Stage 2, one foundation per lock. Each foundation appends its tokens under its own
+   header, naming the decision that locked it. Nothing is added ahead of its lock.
+   Values are OKLCH with hex fallbacks measured to the same sRGB: hex in :root, OKLCH inside
+   the @supports block below. Every token carries a comment: its OKLCH value, its role, and its
+   key contrast ratio. Components use roles, never raw values.
+   Contrast table: design/spec/design-system.md, "Colour". */
+
+:root {
+  /* ---- Colour · light side (locked D-nnn, <date>) ------------------------- */
+  /* --color-ground:      #______;  oklch(...)   page ground */
+  /* --color-ground-tint: #______;  oklch(...)   the tint band */
+  /* --color-rule:        #______;  oklch(...)   hairlines (not text) */
+  /* --color-ink:         #______;  oklch(...)   body and heading text on light, <ratio> */
+  /* --color-ink-muted:   #______;  oklch(...)   secondary text on light, <ratio> */
+  /* --color-brand:       #______;  oklch(...)   links, numerals, small marks on light, <ratio> */
+
+  /* ---- Colour · dark surfaces --------------------------------------------- */
+  /* one hue in a few lightness steps; say on each step which text roles are allowed */
+
+  /* ---- Colour · text on dark ---------------------------------------------- */
+
+  /* ---- Colour · states (forms only) --------------------------------------- */
+
+  /* ---- Surfaces · skins (locked D-nnn, <date>) ----------------------------- */
+
+  /* ---- Surfaces · elevation, edges, radius --------------------------------- */
+
+  /* ---- Surfaces · continuation (measured on the locked sheet) -------------- */
+
+  /* ---- Skeleton · grid and axes -------------------------------------------- */
+
+  /* ---- Spacing -------------------------------------------------------------- */
+
+  /* ---- Typography ----------------------------------------------------------- */
+
+  /* ---- Motion (Stage 3: easing and duration tokens from design/motion-spec.md) */
+}
+
+@supports (color: oklch(0% 0 0)) {
+  :root {
+    /* the same colour tokens in OKLCH */
+  }
+}

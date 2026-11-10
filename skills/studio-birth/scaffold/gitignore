@@ -1,0 +1,21 @@
+# secrets
+.secrets/
+*.env
+.env.*
+!.env.example
+
+# local Claude Code state
+.claude/settings.local.json
+.claude/worktrees/
+
+# tooling
+node_modules/
+__pycache__/
+.jury/
+.playwright-mcp/
+dist/
+
+# review folders keep the renders that mattered; recordings and working parts stay local
+design/review/**/*.mp4
+design/review/**/*.webm
+design/review/**/_parts/

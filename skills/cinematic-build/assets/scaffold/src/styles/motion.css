@@ -1,0 +1,12 @@
+@layer motion {
+  /* Page transitions as enhancement (Chrome, Safari); Firefox gets a cut. */
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root) { animation: 220ms var(--ease-emph) both fade-out; }
+  ::view-transition-new(root) { animation: 360ms var(--ease-out) both fade-in; }
+  @keyframes fade-in { from { opacity: 0; } }
+  @keyframes fade-out { to { opacity: 0; } }
+  /* Entrances from display:none (popovers, dialogs, menus). */
+  [popover] { opacity: 1; transition: opacity var(--dur-ui) var(--ease-out), display var(--dur-ui) allow-discrete, overlay var(--dur-ui) allow-discrete; }
+  [popover]:not(:popover-open) { opacity: 0; }
+  @starting-style { [popover]:popover-open { opacity: 0; } }
+}

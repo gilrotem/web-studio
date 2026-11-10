@@ -1,0 +1,21 @@
+{
+  "name": "web-studio",
+  "owner": {
+    "name": "Gil Rotem"
+  },
+  "metadata": {
+    "description": "The web design studio kit, published from its own repository. A project adds this marketplace at a tag and installs the one plugin it carries.",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "web-studio",
+      "description": "A web design studio for Claude Code: specification, research, foundations, art direction, build, review and delivery, stage by stage to a written lock.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Gil Rotem"
+      },
+      "source": "./"
+    }
+  ]
+}

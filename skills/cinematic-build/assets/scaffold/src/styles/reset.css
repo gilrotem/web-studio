@@ -1,0 +1,9 @@
+@layer reset {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body { min-block-size: 100dvh; -webkit-font-smoothing: antialiased; }
+  input, button, textarea, select { font: inherit; color: inherit; }
+  button { background: none; border: 0; cursor: pointer; touch-action: manipulation; }
+  a { color: inherit; text-decoration-thickness: from-font; }
+  ul[role="list"] { list-style: none; padding: 0; }
+}

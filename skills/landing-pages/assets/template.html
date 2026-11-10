@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<!--
+  PREMIUM LANDING PAGE STARTER — WordPress-safe.
+  Everything is scoped under #lp-starter so it can be pasted into a Gutenberg
+  Custom HTML block WITHOUT colliding with the theme.
+
+  To deploy to WordPress: copy only the region between
+  <!-- ===== COPY FROM HERE ===== --> and <!-- ===== TO HERE ===== -->
+  into a Custom HTML block. Do NOT copy <html>/<head>/<body>.
+
+  For standalone/Vercel hosting: use the whole file as-is.
+  Rename the #lp-starter id per page (e.g. #lp-acme-2024) to keep pages isolated.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Premium Landing — Starter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- ===== COPY FROM HERE ===== -->
+<div id="lp-starter" class="lp">
+  <style>
+    /* ---- Design tokens (scoped, not :root, to avoid leaking) ---- */
+    #lp-starter {
+      --lp-brand: #4f46e5;
+      --lp-brand-600: #4338ca;
+      --lp-accent: #f59e0b;
+      --lp-fg: #0f172a;
+      --lp-muted: #475569;
+      --lp-bg: #ffffff;
+      --lp-surface: #f8fafc;
+      --lp-border: #e2e8f0;
+      --lp-font-head: "Sora", system-ui, sans-serif;
+      --lp-font-body: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      --lp-radius: 16px;
+      --lp-shadow: 0 1px 2px rgba(15,23,42,.06), 0 8px 24px rgba(15,23,42,.08);
+      --lp-shadow-lg: 0 4px 12px rgba(15,23,42,.08), 0 24px 56px rgba(15,23,42,.12);
+      --lp-maxw: 1120px;
+
+      box-sizing: border-box;
+      font-family: var(--lp-font-body);
+      color: var(--lp-fg);
+      background: var(--lp-bg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    #lp-starter *,
+    #lp-starter *::before,
+    #lp-starter *::after { box-sizing: inherit; }
+
+    #lp-starter h1, #lp-starter h2, #lp-starter h3 {
+      font-family: var(--lp-font-head);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin: 0 0 .5em;
+    }
+    #lp-starter p { margin: 0 0 1rem; color: var(--lp-muted); }
+    #lp-starter a { color: inherit; }
+    #lp-starter img { max-width: 100%; height: auto; display: block; }
+
+    #lp-starter .lp__wrap {
+      max-width: var(--lp-maxw);
+      margin-inline: auto;
+      padding-inline: clamp(1.25rem, 4vw, 2.5rem);
+    }
+    #lp-starter .lp__section { padding-block: clamp(3.5rem, 9vw, 7rem); }
+
+    /* ---- Buttons ---- */
+    #lp-starter .lp__btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font: 600 1rem/1 var(--lp-font-body);
+      padding: .9rem 1.6rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform .15s ease, box-shadow .2s ease, background .2s ease;
+    }
+    #lp-starter .lp__btn--primary {
+      background: var(--lp-brand); color: #fff;
+      box-shadow: 0 6px 16px rgba(79,70,229,.35);
+    }
+    #lp-starter .lp__btn--primary:hover {
+      background: var(--lp-brand-600);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 24px rgba(79,70,229,.42);
+    }
+    #lp-starter .lp__btn--ghost {
+      background: transparent; color: var(--lp-fg); border-color: var(--lp-border);
+    }
+    #lp-starter .lp__btn--ghost:hover { background: var(--lp-surface); }
+
+    /* ---- Hero ---- */
+    #lp-starter .lp__hero {
+      background:
+        radial-gradient(60% 60% at 80% 0%, rgba(79,70,229,.10), transparent 70%),
+        radial-gradient(50% 50% at 0% 30%, rgba(245,158,11,.08), transparent 70%);
+    }
+    #lp-starter .lp__eyebrow {
+      display: inline-block;
+      font: 600 .8rem/1 var(--lp-font-body);
+      letter-spacing: .08em; text-transform: uppercase;
+      color: var(--lp-brand);
+      background: rgba(79,70,229,.08);
+      padding: .5rem .85rem; border-radius: 999px; margin-bottom: 1.25rem;
+    }
+    #lp-starter .lp__hero h1 {
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      max-width: 16ch;
+    }
+    #lp-starter .lp__hero .lp__lead {
+      font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+      max-width: 52ch; margin-bottom: 2rem;
+    }
+    #lp-starter .lp__cta-row { display: flex; flex-wrap: wrap; gap: .85rem; }
+
+    /* ---- Feature grid ---- */
+    #lp-starter .lp__grid {
+      display: grid; gap: 1.25rem;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    }
+    #lp-starter .lp__card {
+      background: var(--lp-bg);
+      border: 1px solid var(--lp-border);
+      border-radius: var(--lp-radius);
+      padding: 1.75rem;
+      box-shadow: var(--lp-shadow);
+      transition: transform .2s ease, box-shadow .25s ease;
+    }
+    #lp-starter .lp__card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--lp-shadow-lg);
+    }
+    #lp-starter .lp__icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: grid; place-items: center; margin-bottom: 1rem;
+      background: rgba(79,70,229,.1); color: var(--lp-brand);
+      font-size: 1.4rem;
+    }
+    #lp-starter .lp__card h3 { font-size: 1.2rem; }
+
+    /* ---- Final CTA ---- */
+    #lp-starter .lp__cta-band {
+      background: var(--lp-fg); color: #fff;
+      border-radius: clamp(20px, 4vw, 32px);
+      padding: clamp(2.5rem, 6vw, 4rem);
+      text-align: center;
+    }
+    #lp-starter .lp__cta-band h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); }
+    #lp-starter .lp__cta-band p { color: rgba(255,255,255,.75); max-width: 48ch; margin-inline: auto; }
+
+    /* ---- Section heading helper ---- */
+    #lp-starter .lp__head { max-width: 56ch; margin-bottom: 2.5rem; }
+    #lp-starter .lp__head h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); }
+
+    /* ---- Scroll reveal ---- */
+    #lp-starter .lp__reveal {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    #lp-starter .lp__reveal.is-in { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      #lp-starter * { animation: none !important; transition: none !important; }
+      #lp-starter .lp__reveal { opacity: 1; transform: none; }
+    }
+  </style>
+
+  <!-- HERO -->
+  <header class="lp__hero">
+    <div class="lp__wrap lp__section">
+      <span class="lp__eyebrow">New · 2024</span>
+      <h1>The premium headline that sells in one glance.</h1>
+      <p class="lp__lead">A clear, benefit-driven subheadline that expands on the
+        promise and earns the next scroll. Keep it to two lines on desktop.</p>
+      <div class="lp__cta-row">
+        <a href="#cta" class="lp__btn lp__btn--primary">Get started →</a>
+        <a href="#features" class="lp__btn lp__btn--ghost">See how it works</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- FEATURES -->
+  <section id="features" class="lp__section" style="background:var(--lp-surface)">
+    <div class="lp__wrap">
+      <div class="lp__head lp__reveal">
+        <h2>Everything you need, nothing you don't.</h2>
+        <p>Three to six benefits, each tied to an outcome the visitor cares about.</p>
+      </div>
+      <div class="lp__grid">
+        <article class="lp__card lp__reveal">
+          <div class="lp__icon">⚡</div>
+          <h3>Fast by default</h3>
+          <p>Lead with the benefit, then explain the mechanism in one sentence.</p>
+        </article>
+        <article class="lp__card lp__reveal">
+          <div class="lp__icon">🎯</div>
+          <h3>Built to convert</h3>
+          <p>Lead with the benefit, then explain the mechanism in one sentence.</p>
+        </article>
+        <article class="lp__card lp__reveal">
+          <div class="lp__icon">🔒</div>
+          <h3>Reliable & secure</h3>
+          <p>Lead with the benefit, then explain the mechanism in one sentence.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section id="cta" class="lp__section">
+    <div class="lp__wrap">
+      <div class="lp__cta-band lp__reveal">
+        <h2>Ready to get started?</h2>
+        <p>One last push restating the core value and removing the final objection.</p>
+        <p style="margin-top:1.75rem">
+          <a href="#" class="lp__btn lp__btn--primary">Claim your spot →</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      var root = document.getElementById('lp-starter');
+      if (!root || root.dataset.lpInit) return;   // guard double-init
+      root.dataset.lpInit = '1';
+
+      var els = root.querySelectorAll('.lp__reveal');
+      if (!('IntersectionObserver' in window)) {
+        els.forEach(function (el) { el.classList.add('is-in'); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.15 });
+      els.forEach(function (el) { io.observe(el); });
+    })();
+  </script>
+</div>
+<!-- ===== TO HERE ===== -->
+
+</body>
+</html>

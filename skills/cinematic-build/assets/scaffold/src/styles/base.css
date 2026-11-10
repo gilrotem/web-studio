@@ -1,0 +1,34 @@
+@layer reset, tokens, base, components, utilities, motion;
+
+@layer base {
+  html { color-scheme: light dark; scroll-behavior: auto; }
+  body {
+    font-family: var(--font-text);
+    font-size: var(--step-0);
+    line-height: var(--lh-text);
+    color: var(--color-ink);
+    background: var(--color-ground);
+    text-rendering: optimizeLegibility;
+  }
+  h1, h2, h3 { font-family: var(--font-display); line-height: var(--lh-display); font-weight: var(--weight-display); text-wrap: balance; }
+  p { text-wrap: pretty; max-inline-size: 60ch; }
+  :focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; }
+  .skip { position: absolute; inset-inline-start: 0; top: -100%; } .skip:focus { top: 0; }
+  bdi, .ltr { unicode-bidi: isolate; direction: ltr; }
+  img, video, canvas { display: block; max-inline-size: 100%; height: auto; }
+  .scene { position: relative; min-block-size: 100dvh; padding-block: var(--space-xl); padding-inline: var(--gutter); }
+  @media (min-width: 768px) { .scene + .scene { content-visibility: auto; contain-intrinsic-size: auto 100vh; } }
+}
+
+@layer motion {
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  }
+  /* Scroll-driven CSS for pure-progress effects; GSAP handles pinning and scrub. */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal { animation: reveal linear both; animation-timeline: view(); animation-range: entry 10% entry 50%; }
+      @keyframes reveal { from { opacity: 0; translate: 0 2rem; } to { opacity: 1; translate: 0 0; } }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+@layer components {
+  .btn {
+    display: inline-flex; align-items: center; gap: var(--space-xs);
+    padding-block: var(--space-s); padding-inline: var(--space-m);
+    border-radius: var(--radius-pill); font-weight: 600; min-block-size: 44px;
+    transition: transform var(--dur-ui) var(--ease-out), background-color var(--dur-ui) var(--ease-out);
+  }
+  .btn--primary { background: var(--color-accent); color: var(--color-on-accent); }
+  .btn--primary:hover { background: var(--color-accent-strong); }
+  .btn--primary:active { transform: scale(0.98); }
+  .hero__poster { position: absolute; inset: 0; inline-size: 100%; block-size: 100%; object-fit: cover; z-index: -1; }
+}

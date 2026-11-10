@@ -1,0 +1,84 @@
+{
+  "_about": "Example config for the content-map scripts. Copy it to docs/content/content-map.json in the project and replace every value. All paths are relative to the project root and must stay under docs/content/. The data below is a made-up accounting office with three services.",
+
+  "source_dir": "docs/content/source",
+  "text_dir": "docs/content/text",
+  "map_dir": "docs/content/map",
+  "content_doc": "docs/content/CONTENT.md",
+  "labels_file": null,
+
+  "_markers": "Either \"he\", \"en\", or an object with the four words. \"he\" is the object below; \"en\" is have / ask / write / legacy.",
+  "markers": {
+    "have": "יש",
+    "ask": "לבקש",
+    "write": "לכתוב",
+    "legacy": "אתר ישן"
+  },
+
+  "_pages": "One entry per map file, in reading order. The file name is <number>-<slug>.md. `title` is the page's name as the reader knows it. `source` is the stem of the page's text file in text_dir (or a list of stems, or null when the page has no file of its own). Pages that share a `group` are printed under one heading in CONTENT.md.",
+  "pages": [
+    { "number": "00", "slug": "global", "title": "חלקים שחוזרים בכל העמודים", "source": null },
+    { "number": "01", "slug": "home", "title": "עמוד הבית", "source": null },
+    { "number": "02", "slug": "about", "title": "אודות", "source": "אודות המשרד" },
+    { "number": "03", "slug": "contact", "title": "יצירת קשר", "source": null },
+    { "number": "10", "slug": "bookkeeping", "title": "הנהלת חשבונות", "source": "הנהלת חשבונות", "group": "שירותים" },
+    { "number": "11", "slug": "annual-reports", "title": "דוחות שנתיים", "source": "דוחות שנתיים", "group": "שירותים" },
+    { "number": "12", "slug": "tax-advice", "title": "ייעוץ מס", "source": "ייעוץ מס", "group": "שירותים" }
+  ],
+
+  "_confirm_phrases": "Optional. Wordings in the client's own texts that promise something and need a yes before they go live. The index lists every area that carries one.",
+  "confirm_phrases": ["פגישת היכרות ללא עלות"],
+
+  "_area_labels": "Optional. Area name in the map (English) -> the heading shown in CONTENT.md. A labels file (labels_file) can hold the same under `areas`, plus a reader's wording for each missing line under `missing`.",
+  "area_labels": {
+    "Header · logo line": "לוגו",
+    "Header · navigation": "תפריט ניווט",
+    "Header · action button": "כפתור הפנייה בראש העמוד",
+    "Lead band": "פס הפנייה",
+    "Process block": "איך עובדים איתנו",
+    "Footer · page links": "פוטר: קישורים לעמודים",
+    "Footer · contact block": "פוטר: פרטי התקשרות",
+    "Footer · legal links and copyright line": "פוטר: קישורים משפטיים ושורת זכויות",
+    "Privacy policy": "עמוד מדיניות פרטיות",
+    "Accessibility statement": "עמוד הצהרת נגישות",
+    "Accessibility statement · contact person": "הצהרת נגישות: איש קשר",
+    "404 page": "עמוד שגיאה (404)",
+    "Hero · headline": "כותרת ראשית",
+    "Hero · sub-line": "תת-כותרת",
+    "Hero · button": "כפתור ראשי",
+    "Positioning": "פסקת פתיחה",
+    "Services grid": "רשימת השירותים",
+    "Testimonials": "המלצות",
+    "Page title": "כותרת העמוד",
+    "Opening": "פתיחה",
+    "Body": "הטקסט",
+    "Process (work steps)": "שלבי העבודה",
+    "Closing CTA": "סיום ופנייה",
+    "Credentials": "הסמכה וניסיון",
+    "Phone and WhatsApp": "טלפון ו-וואטסאפ",
+    "Email": "מייל",
+    "Office address": "כתובת המשרד",
+    "Opening hours": "שעות פעילות",
+    "Form · field labels and button": "טופס השארת פרטים",
+    "Form · privacy notice": "טופס: הודעת פרטיות",
+    "Form · success and error states": "טופס: הודעות אחרי שליחה"
+  },
+
+  "_doc": "Optional. The strings CONTENT.md itself is written in. Leave a key out to get the English default. {date} becomes the build date.",
+  "doc": {
+    "title": "תוכן האתר — משרד רואי חשבון לדוגמה",
+    "intro": "מסמך אחד עם כל הטקסטים של האתר החדש, עמוד אחרי עמוד, כפי שהם היום. איפה שחסר טקסט או פרט, כתוב חסר ומה בדיוק חסר: מה שנדרש מכם, ומה שאנחנו נכתוב ונעביר לאישורכם. הטקסטים לא נערכו ולא שוכתבו. נכון ל-{date}.",
+    "summary_heading": "מה חסר, בקצרה",
+    "ask_heading": "נדרש מכם",
+    "write_heading": "ייכתב על ידינו לאישורכם",
+    "table_header": ["עמוד", "מה", "פירוט"],
+    "missing_ask": "חסר — נדרש מכם:",
+    "missing_write": "חסר — ייכתב על ידינו לאישורכם:",
+    "draft_note": "טיוטה לאישורכם.",
+    "legacy_note": "נלקח מהאתר הקודם; ייכנס לאתר החדש רק באישורכם.",
+    "nothing": "אין.",
+    "group_intro": {
+      "שירותים": "עמוד אחד לכל שירות. בסוף כל עמוד חוזרים \"איך עובדים איתנו\" ופס הפנייה."
+    }
+  }
+}
