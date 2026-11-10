@@ -45,7 +45,7 @@ To pin a project to a version, add the marketplace at a tag in the project's
   "enabledPlugins": { "web-studio@web-studio": true },
   "extraKnownMarketplaces": {
     "web-studio": {
-      "source": { "source": "github", "repo": "gilrotem/web-studio", "ref": "v1.0.0" },
+      "source": { "source": "github", "repo": "gilrotem/web-studio", "ref": "v1.0.1" },
       "autoUpdate": false
     }
   }

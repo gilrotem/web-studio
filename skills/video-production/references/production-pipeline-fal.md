@@ -207,6 +207,16 @@ This one has no slots. Send it with every video call.
 **Inputs:** the reference stills of the person. **Goal:** 10 to 14 consistent stills
 of the character in the SETTING, in wardrobe, from varied angles.
 
+**This stage is the identity proof** (`SKILL.md`, section 3). It runs with a face
+only when the project's lock opens the face and the person's written agreement is
+on file; otherwise skip to the hand sheet. Lay the kept stills side by side: one
+face shape, hairline, eyes, age and skin across all of them, and recognisably the
+real person. If that fails after one corrected round, the film is hands and
+silhouette, every face beat is rewritten as a hands beat, and no image-to-video
+call is made for a face. Write the result (passed or fell back, with the date) in
+the run log before Stage C (keyframes), and never start Stage D (image-to-video)
+for a face beat without it.
+
 Each prompt = CHARACTER + SETTING + STYLE + one line below.
 
 1. "Frontal medium close-up, looking directly at camera, calm half-smile, hands

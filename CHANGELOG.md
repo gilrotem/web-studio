@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.0.1 — 2026-11-10
+
+- `video-production`: hands and silhouette are stated as the default for every film. A sharp
+  face is an exception opened only by the project's lock plus the person's written agreement.
+  Added the identity proof: the character sheet (stills) is checked for one consistent,
+  recognisable person before any video money is spent on a face beat; if it fails after one
+  corrected round, the film falls back to hands and silhouette.
+
 ## 1.0.0 — 2026-11-10
 
 First packaging of the studio as its own plugin.

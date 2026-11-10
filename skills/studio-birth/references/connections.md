@@ -86,7 +86,7 @@ As a plugin (the normal way), in the project or at user scope:
 ```
 
 Pinning a version: add the marketplace at a tag in the project's `.claude/settings.json`
-(`extraKnownMarketplaces` with `"ref": "v1.0.0"`), so a project keeps the kit it was born on
+(`extraKnownMarketplaces` with `"ref": "v1.0.1"`), so a project keeps the kit it was born on
 until it is upgraded on purpose.
 
 The repository is private: the GitHub account of the machine or the Claude account that installs

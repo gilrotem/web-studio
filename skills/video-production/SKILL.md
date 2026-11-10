@@ -67,9 +67,19 @@ thought; 5 to 7 cost money and never run before the gate.
 - **A written lock before any generation money is spent.** The Art Director's lock
   is recorded in the project with the cost cap and the page's loop length. Until
   then, no call to an image or video model for this video.
-- **The likeness line.** If a real person appears, their written agreement to a
-  generated likeness is on file before the character sheet. The lock says whether
-  the face is shown or the film is hands and silhouette.
+- **The likeness line.** Hands and silhouette are the default for every film. A
+  sharp face is an exception only the Art Director opens: the lock for that project
+  says in words that the face is shown, and the person's written agreement to a
+  generated likeness is on file before the character sheet. Without both, no face
+  is generated.
+- **The identity proof, before any video money.** When the face is open, the
+  character sheet (stage 5, stills only) is the test. Lay the kept stills side by
+  side and check that it is one person: the same face shape, hairline, eyes, age
+  and skin across every still, and recognisably the real person. If the identity
+  does not hold after one corrected round, the film falls back to hands and
+  silhouette without a new question, and the session says so in one line. No
+  image-to-video call for a face beat is made before this check passes and its
+  result is written in the run log.
 - **Above the cap is a new question.** A spend past the cap is asked before the run,
   never reported after it.
 - The beat script (stage 4) is written in full after the lock. A change to the
@@ -105,8 +115,9 @@ Consistency:
 3. One room. A generation that moves the window is discarded.
 4. One seed per beat once the composition is right; then only the motion prompt
    varies.
-5. Sharp face in the first and last beats only. Hands carry the rest. Identity
-   drift is the largest quality risk.
+5. When the face is open (section 3) and the identity proof passed: a sharp face
+   in the first and last beats only. Hands carry the rest. Identity drift is the
+   largest quality risk, which is why the default is no face at all.
 6. One accent object per frame; the motif once per beat; one gesture per clip.
 7. One video model in the final edit, one LUT, one grain.
 8. Reject on objective faults: a face that changes within the clip, extra fingers,
