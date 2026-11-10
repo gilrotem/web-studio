@@ -34,7 +34,6 @@ items move conversion most. (Framework adapted from the open-source `page-cro` s
 - [ ] Semantic HTML, single `<h1>`, correct heading order.
 - [ ] CSS uses custom properties + `clamp()`; mobile-first; low specificity.
 - [ ] No unused CSS/JS, no jQuery/heavy libs unless required.
-- [ ] WordPress-safe if WP-targeted (namespaced, no document tags) — see deploy ref.
 
 ## Accessibility (must)
 - [ ] WCAG AA contrast on all text and interactive elements.

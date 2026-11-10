@@ -1,8 +1,8 @@
 ---
-description: PAGE mode — design a landing/marketing page from scratch (generative, high thinking)
+description: The page job — one page or one area added to an existing site, two locks (the concept; the page)
 ---
-Follow the `mode-page` skill.
+Follow the `mode-page` skill and the `studio` skill's page job.
 
 Project: $ARGUMENTS
 
-Load `design/spec/contract.md` and the `signature` skill. Check the studio's three gates (`studio` skill) before writing any code. Do the reference intake yourself (Mobbin), decide one language, build the complete page yourself to the premium bar, and present it once. No options round unless asked, no subagents, no questions to the Art Director mid-build.
+Read `design/spec/contract.md` (filled at birth) and the `signature` skill. Check the studio's three gates before writing any code. Do the reference intake yourself (Mobbin), read and measure the host site's system, decide one language, and build straight through: the first view for lock 1, the whole page for lock 2, each presented once after the jury. One builder builds the page whole; no options round unless asked; no questions to the Art Director mid-build.

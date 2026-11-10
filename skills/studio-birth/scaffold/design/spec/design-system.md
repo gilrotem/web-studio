@@ -1,8 +1,8 @@
 # Design system — <project>
 
-> Stage 2: the foundations, one per lock, in this order. Each section is filled in its own
-> session and locked by the Art Director in writing (the ruling is quoted in `DECISIONS.md`). An
-> empty section is not yet reached; nothing here is inferred ahead of its lock.
+> Stage 2: the foundations, in this order, built one on the other and locked together at lock 2
+> (one lock per foundation only when the contract opens it). The ruling is recorded with
+> `/web-studio:lock`. An empty section is not yet reached; nothing here is inferred ahead of it.
 > Tokens: `tokens.css`. Method: the `foundations` skill.
 
 ## 1 · Colour — not yet reached

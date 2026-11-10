@@ -1,16 +1,24 @@
 ---
 name: wp-theme
-description: Delivery of a designed site as a hand-coded WordPress theme in clean code, no page builder: hybrid theme (PHP templates + theme.json), Vite-built script modules, Interactivity API, suppressing core style bleed, RTL without rtl.css, fonts, speculative loading, LiteSpeed Cache on shared hosting, forms with the privacy notice, hand-off into site/. Use when the contract's Delivery is a WordPress theme, when the user says "וורדפרס", "תבנית", "theme", or when a built page must land in site/.
+description: Adaptation of a locked design (the working site in clean code that the design flow ends with) into a hand-coded WordPress theme or a WordPress page — a separate job opened after the last design lock, with its own brief; no design stage loads it. Use when the user says "וורדפרס", "תבנית", "theme".
 ---
 
-# WordPress theme delivery — clean code, no builder
+# WordPress adaptation — clean code, no builder
 
-Target as of 2026-11-09: WordPress 7.1.x (7.2 due 8 Dec 2026), PHP 8.3, shared hosting with
-LiteSpeed Cache (Hostinger is the measured case). Facts and sources: the `craft-research` skill
-(`execution_stack` note). The site is designed and built as a static site first (`studio` skill,
-"The working mode"); the theme is made from the finished static site and handed into `site/`.
-Nothing is written to a live server from a design session: every server write is a separate,
-confirm-first step with the Art Director's yes to the exact action.
+The design flow ends at the last lock. This job starts from the locked `design/build/` and
+changes nothing in the design. Deployment, staging, a full backup with a restore test before the
+first deploy, and every live write (confirm-first, one change and one read-back at a time) belong
+to this job.
+
+Target as of 2026-11-09: WordPress 7.1.x, PHP 8.3 (hybrid theme, `wp_enqueue_script_module()`,
+speculative loading constants); 7.2 due 8 Dec 2026. Shared hosting with LiteSpeed Cache
+(Hostinger is the measured case). Facts and sources: the `craft-research` skill
+(`execution_stack` note). The theme is made from the finished static site and handed into `site/`.
+
+## A single page into an existing WordPress site
+`references/wordpress-page-deploy.md`. Namespace everything under one wrapper; tokens scoped to
+the wrapper (the `system-packs` CLI builds them with `--scope '#wrapper'`); no document tags
+(`<html>`, `<head>`, `<body>`) inside a block.
 
 ## 1. Architecture: hybrid theme
 - Classic PHP templates (`header.php`, `front-page.php`, `page-<slug>.php`, `parts/`) plus a
@@ -66,12 +74,13 @@ confirm-first step with the Art Director's yes to the exact action.
 - JSON-LD per `hebrew-rtl-israel` section 7, emitted by the theme, not by an SEO plugin's
   generic Organization block.
 
-## 7. Done means
-Rendered from the theme (local WordPress or a staging copy on the host) at 390 and 1440, RTL,
-reduced motion, and identical to the locked static site by screenshot diff; `visual-review` and
-`jury` gates passed; `rtl-lint` clean; axe zero violations; no core style bleed in the live HTML;
-Lighthouse mobile on the preview; the file list for `site/` written. The deploy itself is a
-separate confirm-first step (`studio` skill, "Stage 6"), never part of this skill.
+## 7. Done when
+- Every page renders identical to the locked static site at 390 and 1440 (screenshot diff saved).
+- `theme.json` presets are generated from `design/spec/tokens.css`.
+- No core style bleed in the live HTML.
+- Also: RTL and reduced motion checked, `rtl-lint` clean, axe zero violations, Lighthouse mobile
+  on the preview, the file list for `site/` written. The deploy itself is a separate
+  confirm-first step.
 
 ## 8. Conversion from the static site (the order that keeps it mechanical)
 The static build is written so this step is mechanical: one template per page type, one partial

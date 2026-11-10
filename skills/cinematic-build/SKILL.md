@@ -1,6 +1,6 @@
 ---
 name: cinematic-build
-description: Scaffolds and builds the site: Vite 8 (or Astro 7, or a WordPress hybrid theme via `wp-theme`) + vanilla CSS layers and DTCG tokens + GSAP 3.15.1+ + Lenis wiring, RTL first, with performance guardrails and fallback chains. Use when the user says "build", "scaffold", "hero", "section", "scene", "תבנה", "סצנה", or when art-direction.md and motion-spec.md exist and code does not.
+description: Scaffolds and builds the site: Vite 8 (or Astro 7) + vanilla CSS layers and DTCG tokens + GSAP 3.15.1+ + Lenis wiring, RTL first, with performance guardrails and fallback chains. Use when the user says "build", "scaffold", "hero", "section", "scene", "תבנה", "סצנה", or when art-direction.md and motion-spec.md exist and code does not.
 ---
 
 # Cinematic build — one hand, scene by scene
@@ -25,7 +25,7 @@ public/               fonts (subset woff2), media (poster first), icons sprite
 ```
 CSS layer order, declared once in `base.css`: `@layer reset, tokens, base, components, utilities, motion;`.
 Dev server for the browser pane: `.claude/launch.json` is already set to `npm run dev` on 5173.
-Astro 7 instead of Vite when there are more than ~5 pages or a CMS: same layers, `<ClientRouter />` for transitions, `<Image>` for responsive images. When Delivery is a WordPress theme, the same `src/` builds with Vite 8 into the theme and is enqueued as script modules: see `wp-theme`.
+Astro 7 instead of Vite when there are more than ~5 pages: same layers, `<ClientRouter />` for transitions, `<Image>` for responsive images.
 
 ## 2. Build order
 1. **Tokens first.** `design/tokens/tokens.json` to `src/styles/tokens.css` (`node scripts/build-tokens.mjs`). No magic numbers after this point.
@@ -57,7 +57,7 @@ Never a second rAF loop. Never `normalizeScroll()` together with Lenis. Plugins 
 - Fallback chain: WebGPU -> WebGL2 -> poster; `@supports` gates for scroll-driven CSS and anchor positioning; cross-document transitions degrade to a cut.
 - JS under 150 KB gzipped total; hero media under 1.5 MB; fonts subset (`asset-pipeline`).
 - RTL: logical properties only, `<bdi>` around numbers and Latin, mirrored directional icons (`hebrew-rtl-israel`).
-- Speculation Rules `prerender` for the top two links as a Chrome bonus (in WordPress through core's speculative loading, `wp-theme` section 5).
+- Speculation Rules `prerender` for the top two links as a Chrome bonus.
 
 ## 5. Component craft (every interactive element)
 Resting, hover, focus-visible, active, disabled, loading. Hover and active more contrasty than rest. `touch-action: manipulation`. Tap targets 24 px minimum. Buttons state the outcome in Hebrew.

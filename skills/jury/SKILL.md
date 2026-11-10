@@ -81,18 +81,22 @@ node $SKILL/scripts/audit.mjs <url> > <abs>/.jury/<host>/audit.txt
 
 ### 4. Score
 
-- **With subagents:** give a fresh one the critic brief from `references/quality-bar.md`
+The critic is always a fresh agent that did not build the piece: a subagent, or a separate
+session given only the critic brief.
+
+- Give it the critic brief from `references/quality-bar.md`
   ("Critic brief"), with its three paths filled in (the rubric, `.jury/<host>/shots/`,
   `.jury/<host>/audit.txt`). Give it nothing else, and never `calibration.md`. It reads every
   screenshot, so your own context stays small.
-- **Without subagents:** score it yourself under the same brief, from the evidence alone, and
-  mark the card as a self-score.
-- **If you built or edited this site in this conversation**, a self-score isn't blind. Use a
-  subagent, or say on the card that the score is not independent.
+- If no fresh agent can be started here, start a separate session with the brief. A builder
+  never scores its own piece for a lock (the one model rule in the `studio` skill).
+- A self-score is allowed only when the user asks to score a site nobody here built; the card
+  is marked "self-score".
 
 ### 5. Score card
 
-Write `.jury/<host>/scorecard.md` and give the same card in chat:
+Write `.jury/<host>/scorecard.md` and give the same card in chat. "Pass" names its scale: the gate is 7.0 overall and 6 per axis on this Awwwards-style scale.
+
 
 ```markdown
 # <site>: jury score

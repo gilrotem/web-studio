@@ -1,13 +1,14 @@
 ---
 name: foundations
-description: Stage 2 of a site. Builds the design foundations one at a time, in a fixed order (colour, surfaces and skins, skeleton, spacing, typography, design assets, design system), each measured, rendered, presented once and locked in writing, and writes them into design/spec/tokens.css and design/spec/design-system.md. Includes measuring a reference from its CSS, computing contrast, the element-first route when a sheet is rejected, and tools for portraits, textures and render measurement. Use when the user says "foundations", "colour scheme", "palette", "surfaces", "grid", "spacing", "typography", "design system", "tokens", "סכמת צבעים", "משטחים", "טיפוגרפיה", "דיזיין סיסטם", or when Stage 1 is locked and no tokens exist.
+description: Stage 2 of the site job. Builds the design foundations in a fixed order (colour, surfaces and skins, skeleton, spacing, typography, design assets, design system), each measured and built in use, presented together once for one lock (lock 2: the foundations; a lock per foundation only when the contract opens it), and writes them into design/spec/tokens.css and design/spec/design-system.md. Includes measuring a reference from its CSS, computing contrast, the element-first route when a sheet is rejected, and tools for portraits, textures and render measurement. Use when the user says "foundations", "colour scheme", "palette", "surfaces", "grid", "spacing", "typography", "design system", "tokens", "סכמת צבעים", "משטחים", "טיפוגרפיה", "דיזיין סיסטם", or when Stage 1 is locked and no tokens exist.
 ---
 
-# Foundations — one at a time, each to a lock
+# Foundations — in order, to one lock
 
-Input: the locked contract, the bar, the audit and the type proposal (Stage 1), and the locked
-architecture (`design/spec/ia.md`). Output: `design/spec/tokens.css` and
-`design/spec/design-system.md`, growing one section per lock, then `composition.md` and
+Input: lock 1: the contract, the bar, the audit, the type proposal and the architecture
+(`design/spec/ia.md`). Output: `design/spec/tokens.css` (or `design/spec/pack.json`, from which
+`tokens.css` is generated, when type and space start from a `system-packs` pack) and
+`design/spec/design-system.md`, one section per foundation, then `composition.md` and
 `components.md`.
 
 The creative concept comes after this stage on purpose. Foundations give the concept a settled,
@@ -26,26 +27,28 @@ grid's rhythm; type is set into that rhythm; icons and dividers are drawn at the
 the system is what all of it adds up to, with states. Reordering it makes each sheet ask the Art
 Director to imagine the parts that do not exist yet.
 
-One foundation per presentation. Two may share a session when the first locks inside it. A
-foundation that is not reached yet is an empty, labelled section in `design-system.md`; nothing
-is inferred into it ahead of its lock.
+The foundations are built one after the other, each on the ones before it, and presented
+**together, once**: one sheet set at 1440 and 390, for lock 2. Between the start of the stage and
+that lock nothing is shown for a nod. Only when the contract's Opened line names "foundation
+locks" is each foundation presented and locked on its own, in this order.
 
 ## What every foundation goes through
 
-1. **Read what binds it.** The rulings in `DECISIONS.md` (quote them), the contract's
-   Guardrails, the client's own words about look and feel (read with the Art Director in the
-   stage, not interpreted alone), the bar's written lines.
+1. **Read what binds it.** The rulings that bind it (quote them), the contract's Guardrails,
+   the client's own words about look and feel, the bar's written lines. A word of taste that
+   the files cannot settle goes to "Not settled here" for the lock; it is not asked mid-stage.
 2. **Measure.** The brand from its vector file. The reference the client likes from its DOM and
    CSS (below). Nothing by eye.
 3. **Build it in use.** A rendered, composed sheet at 1440 and 390 with the real logo, the real
    strings from the content map, real imagery and the real typeface. Never swatches and boxes.
 4. **Review it privately** (`visual-verify`, REFINE): render, name the single weakest thing, fix
    it at the root, render again. Then put it next to `design/references/bar/`.
-5. **Present once**, with one closing question that names the scope and says what is not
-   covered.
-6. **On the written lock**: append the tokens under their own header in `tokens.css`, fill the
-   section in `design-system.md` and mark it "locked D-nnn, date", quote the ruling into
-   `DECISIONS.md`, save the sheet under `design/review/<date>-<foundation>/`.
+5. **Present all of them once**, at the end of the stage, with one closing question ("Are the
+   foundations locked?") that says what is not covered (the concept, the hero, motion).
+6. **On the written lock**: write the tokens under their own headers in `tokens.css` (or freeze
+   the pack), fill the sections in `design-system.md` and mark them "locked D-nnn, date",
+   record the ruling (`/web-studio:lock`), save the sheets under
+   `design/review/<date>-foundations/`.
 
 Each section of `design-system.md` ends with "Not settled here": what this foundation showed but
 did not decide.
@@ -159,13 +162,17 @@ whole scroll. Output: spacing tokens and a section in `design-system.md`.
 
 ## 5. Typography
 
-The pairing was proposed in Stage 1 from the bench the contract allows; it is locked here, with
-the tokens, after a pass on a real phone.
+The pairing was proposed in stage 1 from the bench the contract allows; it is settled here, with
+the tokens, after a pass on a real phone, and locked with the rest at lock 2. For Hebrew, type and
+space may start from a `system-packs` pack (a tested set of roles, measures and spacing under the
+canon): `cli.mjs use <pack>`, then tune the pack to the real strings; the pack is then the one
+source of `tokens.css`.
 
 - Roles: display, subhead, body, UI, numerals. For each: family, weight (and width where the
   family has the axis), size as a fluid clamp, line-height, measure.
 - The script's rules. For Hebrew (`hebrew-rtl-israel`): no letter-spacing, body 17 to 19 px at
-  1.65 to 1.7, measure 55 to 65 characters, `text-wrap: balance` on headings, tabular figures,
+  a reading line-height of 1.5 to 1.8 (display 1.0 to 1.25; the canon in `system-packs`), measure 55
+  to 65 characters, `text-wrap: balance` on headings, tabular figures,
   `<bdi>` around digits and Latin runs.
 - Hierarchy from scale, weight and width, since most competitors set one sans at two weights
   with no scale. A variable family with two axes gives hierarchy inside one family, with no
@@ -200,8 +207,8 @@ is locked or explicitly empty, and nothing in a sheet uses a raw value.
 
 ## The element-first route
 
-Use it when a foundation sheet comes back rejected, or when a lock made on a sheet fails on a
-whole page.
+The exception, used when the foundations sheet comes back rejected at lock 2, or when a lock
+made on a sheet fails on a whole page.
 
 1. Do not make another sheet of the same kind, and do not build a whole page.
 2. Measure what the remark points at (`studio` skill, `references/practices.md`, "Reading the Art
@@ -221,8 +228,9 @@ read off something that already works.
 
 ## Files this stage writes
 
-- `design/spec/tokens.css`: one header per foundation, each naming the decision that locked it.
-  Components use roles, never raw values.
+- `design/spec/tokens.css`: one header per foundation, each naming the decision that locked it
+  (generated from `design/spec/pack.json` when a pack is the source). Components use roles, never
+  raw values.
 - `design/spec/design-system.md`: one numbered section per foundation: "How it got here" when a
   lock was reopened, "What was measured", the scheme or the set, the rules, the contrast table,
   "Not settled here".

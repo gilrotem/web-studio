@@ -22,7 +22,7 @@ because both need to know what the site actually has to say:
 - The client is asked once. Everything only they can supply goes out in one message, early,
   while the rest of the work runs.
 
-The stage ends on a gate: the Art Director's written yes to the map as the content baseline.
+The stage ends on a gate: the Art Director's written yes to the map as the content baseline, given with lock 1 (the bar and the contract).
 
 ## 2. The content library
 
@@ -346,7 +346,7 @@ Write each call as one line with its reason under `## Notes` in `map/INDEX.md`, 
 markers in the page files, rebuild the index and `CONTENT.md`, and write `GAPS.md`.
 
 **Gate.** Present the map to the Art Director: the totals, the gaps table, the calls made.
-The stage closes on the Art Director's written yes to the map as the content baseline. Quote
+The Art Director's written yes to the map as the content baseline is given with lock 1 (the bar and the contract). Quote
 that yes where the project keeps its decisions. Silence is not a yes. Until it is given,
 architecture does not build on the map and nothing goes to the client.
 
@@ -411,11 +411,11 @@ Two groups, at two different times.
 
 ## 17. Which model for which task
 
-| Task | Model |
-|---|---|
-| Intake, extraction, cutting the page files, the global file and skeletons, the index, drafting the client message, microcopy and legal drafts | Mid model |
-| The judgement pass, creative copy | Strong model |
-| Hand spot-checks, filing answers and changing markers | Small model |
+The one model rule in the `studio` skill applies. The tasks, classified:
+
+- **Sonnet**: intake, extraction, cutting the page files, the global file, skeletons, the index, drafting the client message, microcopy and legal drafts. A long cut across many pages goes to Opus.
+- **Fable**: the judgement pass and creative copy.
+- **Haiku**: hand spot-checks, filing answers and changing markers.
 
 ## 18. Rules
 
@@ -440,5 +440,5 @@ Two groups, at two different times.
 - `docs/content/INDEX.md` lists every file with its word count and what it lacks.
 - `map/` has one file per page of the config, every area marked, no "Problems" in the index.
 - The verbatim check is `ok` for every page with a source; three files were read by hand.
-- The Art Director gave a written yes to the map as the content baseline.
-- The message to the client is drafted and saved; its send date is recorded once he sent it.
+- The Art Director gave a written yes to the map as the content baseline, with lock 1 (the bar and the contract).
+- The message to the client is drafted and saved; its send date is recorded once it is sent.

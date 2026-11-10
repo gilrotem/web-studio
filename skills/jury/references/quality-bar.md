@@ -101,7 +101,7 @@ earlier scores, no notes on what you were going for.
 - **Google Antigravity (CLI `agy`, IDE, 2.0)**: Launch via `invoke_subagent` with `TypeName: "self"` (or `"research"`), `Role: "Awwwards QA Critic"`, passing the brief below in `Prompt`. The critic runs independently and reports back.
 - **Claude Code**: Launch via the `Agent` tool (`Task` in older versions).
 - **Codex & Other Multi-Agent Harnesses**: Spawn a fresh delegated worker/sub-session with this brief.
-- **Single-turn / Without subagents**: Only if your environment cannot launch subagents or delegate. See "Without subagents" below.
+- **No agent available here**: start a separate session with the brief. A builder never scores its own piece for a lock (the one model rule in the `studio` skill).
 
 ```
 You are an Awwwards juror reviewing a site you have never seen. You get only evidence. Use
@@ -144,7 +144,8 @@ Compare the critic's one-sentence idea with what the site was meant to say (a co
 brief, the owner's own words). If they don't match, the site isn't saying it: fix the site, not
 the critic.
 
-**Without subagents**, and only then, score it yourself under the same rules, strictly from the
-evidence. Look at the evidence before reading any code, design notes or description of intent,
-start every category at 6, and give no points without a cited file. Say in the final message
-that the score is a self-score.
+If no fresh agent can be started, start a separate session with the brief; a builder never
+scores its own piece for a lock. A self-score is allowed only when the user asks to score a
+site nobody here built: look at the evidence before reading any code, design notes or
+description of intent, start every category at 6, give no points without a cited file, and
+say in the final message that the score is a self-score.

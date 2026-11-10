@@ -1,12 +1,15 @@
 ---
 name: studio-art-direction
-description: Stage 2 to 3. Shapes the Art Director's inspiration into one design direction, pitches its concept sentence, and writes design/art-direction.md (type incl. Hebrew pairing, OKLCH color, imagery, grid, component personality, voice, banned patterns, the remembered moment). Use when the user says "concept", "direction", "art direction", "כיוון", "קונספט", or when references exist and no art-direction.md does.
+description: The concept stage (site lock 3, page lock 1). Shapes the inspiration given at birth into one design direction and writes design/art-direction.md (type incl. Hebrew pairing, OKLCH color, imagery, grid, component personality, voice, banned patterns, the remembered moment). Use when the user says "concept", "direction", "art direction", "כיוון", "קונספט", or when references exist and no art-direction.md does.
 ---
 
 # Art direction — from references to a contract
 
-Input: `design/brief.md`, `design/references/`. Output: one direction in chat, then
-`design/art-direction.md`. The Art Director describes the concept or the inspiration; the agent shapes it, the Art Director locks it; the agent writes the document.
+Input: the contract, `docs/design/studio-brief.md` (the inspiration the Art Director gave at
+birth, if any), `design/references/`, and on a site the locked foundations. Output: one
+direction and `design/art-direction.md`. The agent shapes the direction and writes the document;
+the Art Director sees it once, with the hero (site lock 3) or the page's first view (page
+lock 1), and locks it there.
 
 ## 1. The direction (one; a second only when the Art Director asks or the brief genuinely splits)
 Half a page, all effort on this one:
@@ -18,7 +21,7 @@ Half a page, all effort on this one:
 - **Motion reference**: one clip from `design/references/motion/` and the tempo word (languid, crisp, weighted).
 - **The remembered moment**: the one scene people describe afterwards.
 - **Risk**: the one thing that could make it generic or slow.
-Pitch it in chat and wait for the Art Director's written lock. No screens are built for options; parallel directions are not made.
+It is not pitched in chat for a go: it goes straight into the document and the hero, and is presented with them at the lock (`studio` skill, "Straight through"). No screens are built for options; parallel directions are not made. WebGL or video enter only if the contract's Opened line names them.
 
 ## 2. The art-direction document (`design/art-direction.md`)
 Sections, in order, each decided (no "TBD"):

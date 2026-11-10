@@ -6,13 +6,17 @@ Status: <draft, awaiting the Art Director's approval | approved <date>>.
 
 ## Header for the contract
 
-- **Mode:** <`SITE` | `PAGE`>
-- **Delivery:** <...>
+- **Job:** <`site` | `page`>; **Redesign:** <no | yes: the live site's address>
 - **Language:** <...>
-- **Type budget:** `null` (ask once in Stage 1)
+- **Type budget:** <the birth answer>
 - **Imagery budget:** <the cap, or `null`>
 
 ## The Art Director's words (verbatim)
+
+The inspiration or concept given at birth, if any:
+
+> "<verbatim, or: none yet>"
+
 
 The job (D-nnn — <label>):
 
@@ -46,8 +50,7 @@ The full text is `docs/design/client-spec.md`. Its lines, as given:
 - **The one action:** <the client's wording; channels; anything unconfirmed>
 - **A recurring component:** <...>
 - **Motion and register (the spec):** <quotes; "read with the Art Director in the stage, not interpreted here">
-- **Video:** <...>
-- **Where it lives:** <...>
+- **Video:** <...> (built only if the contract opens video)
 
 ## Brand assets (received)
 
@@ -73,10 +76,10 @@ how the texts open and close, what the long-form template must carry>.
 
 ## Stage gate
 
-One stage per session. A stage ends only on the Art Director's written lock, given in that
-stage's own session, in chat, to the exact rendered sheet he was shown. The session quotes the
-lock verbatim into `DECISIONS.md` (origin, ruling, means, reopen-if, source), and only then may
-the next stage's session start. Silence, a passing "looks fine", or an approval of a fragment is
+A stage ends only on the Art Director's written lock, given in that stage's own session, in
+chat, to the exact rendered sheet they were shown. The session records the lock verbatim
+(`/web-studio:lock`: origin, ruling, means, reopen-if, source), and only then may the next
+stage start. Silence, a passing "looks fine", or an approval of a fragment is
 not a lock.
 
 ## Not settled

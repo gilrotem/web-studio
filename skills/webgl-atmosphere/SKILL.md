@@ -5,6 +5,8 @@ description: Decides whether a scene earns WebGL and builds it: Three.js r187 We
 
 # WebGL atmosphere — earned, not sprinkled
 
+This skill opens only when the contract's `**Opened:**` line names WebGL; the WebGL scene's own pitch and lock are the extra lock that line opens.
+
 WebGL is for atmosphere, not spectacle. One scene, usually the hero or the remembered moment.
 If the same feeling is reachable with a video loop, grain and light in CSS, do that.
 

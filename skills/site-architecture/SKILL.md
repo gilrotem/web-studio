@@ -7,8 +7,8 @@ description: The site architecture stage. Decides structure only: which pages ex
 
 Input: the content map (`docs/content/map/`, one file per page; its area names are reused here
 verbatim), the contract (`design/spec/contract.md`), the client's spec, and the audit's "what
-the visitor expects to find". Output: `design/spec/ia.md` and one sitemap sheet, locked by the
-Art Director.
+the visitor expects to find". Output: `design/spec/ia.md` and one sitemap sheet, presented inside lock 1
+(the bar and the contract), not as a lock of its own.
 
 This document decides structure only. No colour, type, layout or copy: those are the later
 stages. Menu labels are not written here; the page names from the map stand in for them until
@@ -64,8 +64,9 @@ contact page has no lead band: the page is the action. Legal pages and the 404 a
 selling blocks. The 404 still lands the reader somewhere useful.
 
 **5. Slugs and titles.**
-- The slug alphabet is a question for the Art Director, asked once as a closed question with a
-  recommendation. The default recommendation is Latin: a non-Latin slug pasted into a messaging
+- The slug alphabet is not asked here: it was asked once at birth and is read from the
+  contract's Intent / Not settled or the design state. If birth left it unsettled, list it in
+  "Not settled" for lock 1. The default recommendation is Latin: a non-Latin slug pasted into a messaging
   app or an email becomes a long percent-encoded string that breaks across lines; Latin slugs
   stay short, readable and copyable; search engines rank both alphabets alike for the
   local-language query, and the title and H1 carry the keywords; the redirect table at a domain
@@ -90,9 +91,8 @@ template orders as columns. It uses the real page names. It is a diagram, so it 
 in the studio that is allowed to be schematic; it still has to be clean, set in a real typeface
 and readable at a glance.
 
-Present it once. Ask the slug question before the closing question, in the same session, then:
-"Is the architecture locked?" Quote the lock into `DECISIONS.md`; the entry's "Means" restates
-the structure in one paragraph (page count, header items and the action, the groups and their
+Present it once, inside lock 1 (the bar and the contract). The lock 1 entry (`/web-studio:lock`)
+carries the structure: its "Means" lists the structure in one paragraph (page count, header items and the action, the groups and their
 order, where each recurring block appears, the templates, the slug alphabet and the title
 pattern), because later sessions read the decision, not the sheet.
 

@@ -1,8 +1,26 @@
-# Truth files — STATUS.md and DECISIONS.md
+# Truth files — the design state and the decision entry
 
-Two files at the project root carry the project's state between sessions. If the project already
-runs under a harness that defines these files, that harness's formats win; this page is for a
-project that has none.
+Two things carry a design between sessions: the **design state** (where the design stands, what
+its next stage is) and the **decision entries** (the Art Director's locks, verbatim).
+
+- **Standalone** (no kernel): the kit's own `STATUS.md` and `DECISIONS.md` at the project root,
+  in the formats below.
+- **Host mode** (the project's `CLAUDE.md` has a line starting `Kernel: agency-harness`): the
+  root `STATUS.md` and `DECISIONS.md` are the kernel's and the kit creates neither. The design
+  state is `docs/design/STATE.md` (the template is in the `studio-birth` scaffold). A lock is an
+  entry in the kernel's `DECISIONS.md`, in the kernel's format as that file's header shows it:
+
+  ```markdown
+  ## D-nnn — label
+  <date> · Origin (<owner> / agent, which session) · Status (standing / superseded by D-mmm)
+  Ruling: <verbatim>
+  Means: <which design lock this is; what it locks, by file and section; what it does not lock; the next stage>
+  Reopen if: <the condition under which this comes back>
+  Source: <the sheet's path; the session and date>
+  ```
+
+  The id is the next free one in that file; the origin carries the question and the sheet, as
+  below. Closing the session (status, ledger, commit) is the kernel's close.
 
 One home per fact. Current state replaces; history appends. A number in a file says where it
 came from. An id is always written with its label.

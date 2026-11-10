@@ -24,17 +24,18 @@ both widths, real content, real imagery, states. When it stands, derive the foun
 back as one sheet for one lock. The derived sheet then shows the scheme *in use*, which is what
 was missing from the abstract one.
 
-**One sheet, shown once.** A sheet that is shown, patched and shown again three times has trained
-the Art Director to expect drafts. Run the review loop privately until the sheet is ready, then
-show it. A revision after his correction is a new revision of the sheet, named as such
+**One sheet, shown once, at the lock.** A sheet that is shown, patched and shown again three
+times has trained the Art Director to expect drafts. Run the review loop privately until the sheet is ready, then
+show it. A revision after their correction is a new revision of the sheet, named as such
 ("rev. 2"), and the lock names the revision.
 
 **The closing question names the scope and what is left out.** "Is the colour scheme locked?"
 together with "Not locked by this: the headline text, type sizes, the grid, motion." Without the
 second sentence a lock is later read as covering things it never showed.
 
-**Questions are closed and few.** One question at a time, with answer options, the recommended
-one first, and "not settled yet" always available. The answer is quoted verbatim, including the
+**Questions are closed, few, and asked once, at birth.** With answer options, the recommended
+one first, and "not settled yet" always available. What a stage cannot settle from the files
+goes to its lock's "Not settled", not to a new question. The answer is quoted verbatim, including the
 option list it was chosen from, so a later session can see what was *not* chosen.
 
 **Process stays out of the presentation.** The page or the sheet speaks. Pass counts, what was
@@ -45,7 +46,7 @@ tried and what was reverted go to `design/review/`, not into the message.
 Words of taste point at something measurable. Find what, and measure it, before changing
 anything.
 
-| He says | It turned out to mean | What to measure |
+| They say | It turned out to mean | What to measure |
 |---|---|---|
 | "crowded", "too busy" | the count of interface elements in the view | elements per viewport: nav items, buttons, labels, badges, floating controls |
 | "too clean", "a block of colour" | a flat field: a large area of one unmodulated colour | the share of the area within a small tolerance of one colour |
@@ -55,7 +56,7 @@ anything.
 
 Two things follow. First, do not answer "crowded" by changing the background, or "too clean" by
 adding elements: the two complaints have opposite cures and are easy to swap. Second, write the
-reading into `STATUS.md` when the session closes, in his terms, so the next session does not
+reading into the design state when the session closes, in their terms, so the next session does not
 relearn it.
 
 ## 3. Measuring
@@ -108,7 +109,7 @@ gets a status line and is otherwise untouched.
 **Locked files are not edited between a reopening and the new lock.** The new work lives in the
 review folder. The tokens change only when the new lock is quoted.
 
-**Rejected rounds are kept as evidence, labelled.** `STATUS.md` lists them as "rejected on the
+**Rejected rounds are kept as evidence, labelled.** The design state lists them as "rejected on the
 way, kept as evidence only" so nobody mistakes them for the current state.
 
 ## 5. Foundations
@@ -202,16 +203,16 @@ has not confirmed (counting figures, for example) is refused until the facts exi
 execute; the session that executes is started with a brief and runs one approved item.
 
 **The repository is the hand-over.** Another machine or another account must be able to continue
-from `STATUS.md`, the plan and the decisions alone. That is why every session closes with a
-commit and push on the Art Director's yes, and why `STATUS.md` says what the next session must
-carry in his own terms.
+from the design state, the plan and the decisions alone. That is why every session closes with the design state
+replaced (and, standalone, a commit and push on the Art Director's yes), and why the state says
+what the next session must carry in their own terms.
 
-**`STATUS.md` stays short.** Current state only. History is in `DECISIONS.md` and in git. A status
+**The design state stays short.** Current state only. History is in the decision entries and in git. A status
 file that grows past a couple of thousand tokens stops being read.
 
-**Servers stay out of design sessions.** No hosting, no accounts, no deploy talk until the
-static site is locked.
+**Platforms stay out of design sessions.** No hosting, no accounts, no deploy talk: design ends
+at the last lock, and adaptation is another job.
 
-**No compromise items keep their own step.** Custom icons, hover states, responsiveness, scroll
-effects and transitions are each a named task with its own presentation. They are never settled
-"on the way" inside another stage, and they are never dropped for time.
+**No compromise items keep their own task.** Custom icons, hover states, responsiveness, scroll
+effects and transitions are each a named task in the plan, built and shown inside the lock they
+belong to. They are never settled "on the way" by accident, and they are never dropped for time.

@@ -5,7 +5,7 @@ about 2,000 tokens: every session reads this file whole.
 
 ## Where we are
 
-- Born <date> on web-studio <version>. Mode <SITE | PAGE>; delivery <...>; language <...>.
+- Born <date> on web-studio <version>. Job <site | site redesign | page>; language <...>.
 - Nothing is designed yet. The contract (`design/spec/contract.md`) carries the birth answers and
   `null` everywhere else.
 - The client's material: <copied into `docs/content/source/` on <date> | not received yet>.

@@ -8,5 +8,5 @@ What we're designing: $ARGUMENTS
 1. Check Mobbin MCP is authenticated (per the skill's prerequisites). If not, stop and tell the Art Director how to authenticate.
 2. Derive 3–5 search angles and search Mobbin.
 3. Present a curated shortlist of 5–10 screens/flows with one-line relevance notes. WAIT for selection.
-4. Save the selected references into the project's design/references/source/mobbin/ and record them in the contract's Reference block, tagged TASTE or STRUCTURE. Offer /extract as the next step ONLY in PORT mode.
+4. Save the selected references into the project's design/references/source/mobbin/ and record them in the contract's Reference block, tagged TASTE or STRUCTURE. Offer /extract only when a source must be reproduced exactly.
 Do not extract or write any code in this session.

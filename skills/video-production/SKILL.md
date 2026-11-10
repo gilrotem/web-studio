@@ -5,6 +5,8 @@ description: Plans and produces a silent, looping brand video for a site, from t
 
 # Video production: one concept, six beats, a silent loop
 
+This skill opens only when the contract's `**Opened:**` line names video; the video's own pitch and lock are the extra lock that line opens.
+
 A brand video is the most expensive asset a site can carry: in generation money, in
 bytes and in attention. This skill decides whether a site earns one, then runs the
 stages in order. The depth is in `references/`; this file is the order, the rules
@@ -80,6 +82,7 @@ thought; 5 to 7 cost money and never run before the gate.
   silhouette without a new question, and the session says so in one line. No
   image-to-video call for a face beat is made before this check passes and its
   result is written in the run log.
+- **Generation goes through the kit's toolkit, which has no video route yet.** A direct fal call is refused by the plugin's fal-guard hook, so a video route is a kit change to make first.
 - **Above the cap is a new question.** A spend past the cap is asked before the run,
   never reported after it.
 - The beat script (stage 4) is written in full after the lock. A change to the

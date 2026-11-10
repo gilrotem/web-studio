@@ -11,8 +11,8 @@ skill of the web-studio kit (<installed as a plugin at version ... | vendored un
 `.claude/skills/`, version in `.claude/web-studio.version`>).
 
 - What it is: <one line: whose site, what kind, the name the site carries>.
-- Mode <SITE | PAGE>; delivery <...>; language <...>.
-- The Art Director is <name>. He gives the concept and the lock; he is not asked to supply
+- Job <site | site redesign | page>; language <...>; imagery cap <...>.
+- The Art Director is <name>. They give the answers at birth and the locks; they are not asked to supply
   references or to choose between screen variants.
 - Chat language: <...>. Files, specs, code and commits in English; the site's language only in
   verbatim quotes, titles, keywords and site copy.
@@ -24,7 +24,7 @@ skill of the web-studio kit (<installed as a plugin at version ... | vendored un
 
 Nothing below happens without the Art Director's yes to the exact action, in this session, in
 writing: any write to a live site, its database or its server; deploys, DNS, redirects, caching;
-anything sent to the client or shown in the client's name; any spend above the imagery budget;
+anything sent to the client or shown in the client's name; raising the imagery cap;
 using a picture of a real person the client has not approved; deleting content or data; choosing
 or moving to the real domain.
 
@@ -33,7 +33,7 @@ or moving to the real domain.
 - One session, one unit of work. A stage ends only on the Art Director's written lock, quoted
   into `DECISIONS.md`.
 - One direction per presentation. Rendered work, not descriptions.
-- Design stages run as a static site from `design/`; no servers or accounts in a design session.
+- Design ends at the lock: the design is a working site in clean code under `design/`; no platform, server or account enters a design session. Adaptation is a separate job after the last lock.
 - A lack found in the kit is written to `STATUS.md` under "For the kit" and fixed in the kit's
   own repository, never patched inside this project.
 - Commit and push only when the Art Director says so.

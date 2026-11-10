@@ -2,7 +2,7 @@
 
 A scene, page or site is done only when every line is true and evidenced in `design/review/`.
 A project copies this file to `docs/design/definition-of-done.md` and adjusts the lines its
-contract changes (the type rule, the delivery, the market's legal lines). A line is never
+contract changes (the type rule, the market's legal lines). A line is never
 deleted to make a page pass; it is marked "not applicable" with the reason.
 
 ## Direction
@@ -12,7 +12,7 @@ deleted to make a page pass; it is marked "not applicable" with the reason.
 - [ ] Banned-pattern list checked (`studio-art-direction`, section 3, plus the project's own list from the audit).
 
 ## Craft
-- [ ] Tokens only; no magic numbers; the delivery's presets (for WordPress, `theme.json`) generated from `design/spec/tokens.css`.
+- [ ] Tokens only; no magic numbers; `design/spec/tokens.css` (or the pack it is generated from) is the one source.
 - [ ] Type: display with a point of view, body 16px+, the script's rules kept (for Hebrew: no letter-spacing, measure about 55 to 65 characters, the project's serif rule as the contract states it).
 - [ ] Contrast 4.5:1 body and 3:1 UI and large text, including text over media; the contrast table in `design-system.md` covers every pair in use.
 - [ ] Every interactive element has rest, hover, focus-visible, active, disabled and loading states.
@@ -37,11 +37,8 @@ deleted to make a page pass; it is marked "not applicable" with the reason.
 - [ ] JSON-LD of the most specific business type validates; OG image renders the site's script correctly.
 - [ ] Text reveals are line-level only.
 
-## Delivery
-- [ ] The delivered build renders identical to the locked static site at 390 and 1440 (screenshot diff saved).
-- [ ] For WordPress: no core style bleed in the live HTML.
-
 ## Quality gates
 - [ ] axe (wcag2a, wcag2aa, wcag21aa) zero violations; keyboard walk done.
-- [ ] Jury score ≥ 7.0 overall, ≥ 6 on each axis, written to `design/review/<date>/jury.md`.
-- [ ] The Art Director's written lock on the site, quoted in `DECISIONS.md`.
+- [ ] `scripts/verify.mjs shoot` (visual-verify) clean on every page at 390 and 1440: no contrast failure, nothing unverifiable left unjudged, evidence not suspect.
+- [ ] Jury score ≥ 7.0 overall, ≥ 6 on each axis (the jury's Awwwards-style scale), by a critic that did not build the site, written to `design/review/<date>/jury.md`.
+- [ ] The Art Director's written lock on the site (site lock 4, page lock 2), recorded with `/web-studio:lock`.

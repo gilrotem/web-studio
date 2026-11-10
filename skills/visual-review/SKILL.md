@@ -35,7 +35,7 @@ Then the checklist, each answered in one line:
 8. Banned-list audit against `design/art-direction.md`.
 9. Details: nav, footer, cursor, preloader, states, focus rings, RTL mirroring right.
 10. Which three sites in `design/references/bar/` could this sit next to? Put the render beside them in one side-by-side sheet. If the answer includes "a template", keep working.
-Name the **single weakest thing**. Fix it at the root. Render again and compare. If it did not visibly improve, revert and try a different move. Three to six passes per scene is normal. When the session that built the scene also reviews it, hand the critique to a reviewer in a fresh context (a sub-agent given only the screenshots and the checklist). After three passes stuck on the same weakness, stop and show the Art Director the side-by-side with your reading.
+Name the **single weakest thing**. Fix it at the root. Render again and compare. If it did not visibly improve, revert and try a different move. Three to six passes per scene is normal. When the session that built the scene also reviews it, hand the critique to a reviewer in a fresh context (a sub-agent given only the screenshots and the checklist). After three passes stuck on the same weakness, hand the piece to the jury (the one check before a lock).
 
 ## 5. Jury score (GATE)
 Score like Awwwards: Design 40, Usability 30, Creativity 20, Content 10, each out of 10, weighted. Under 7.0 overall or under 6 on any axis does not ship. Write the score and the one-line reason per axis into `design/review/<date>/jury.md`.

@@ -55,9 +55,20 @@ try {
     Add-Row "MCP server '$s'" $true $(if ($inProject) { 'declared in the project .mcp.json' } else { 'not in the project .mcp.json (fine when the web-studio plugin supplies it; check /mcp)' }) ''
   }
 
+  $hostMode = (Test-Path 'CLAUDE.md') -and (Select-String -Path 'CLAUDE.md' -Pattern '^Kernel: agency-harness' -Quiet)
+  Add-Row 'Mode' $true $(if ($hostMode) { 'host mode: a kernel project (truth files are the kernel''s)' } else { 'standalone' }) ''
   Add-Row 'design/spec/contract.md' (Test-Path 'design/spec/contract.md') '' 'run the studio-birth skill'
-  Add-Row 'STATUS.md' (Test-Path 'STATUS.md') '' 'run the studio-birth skill'
-  Add-Row 'DECISIONS.md' (Test-Path 'DECISIONS.md') '' 'run the studio-birth skill'
+  if ($hostMode) {
+    Add-Row 'docs/design/STATE.md (the design state)' (Test-Path 'docs/design/STATE.md') '' 'run the studio-birth skill'
+  } else {
+    Add-Row 'STATUS.md' (Test-Path 'STATUS.md') '' 'run the studio-birth skill'
+    Add-Row 'DECISIONS.md' (Test-Path 'DECISIONS.md') '' 'run the studio-birth skill'
+  }
+  if (Test-Path 'design/spec/contract.md') {
+    $cap = Select-String -Path 'design/spec/contract.md' -Pattern '^\*\*Imagery budget:\*\*\s*(.*)$' | Select-Object -First 1
+    $capSet = $cap -and ($cap.Matches[0].Groups[1].Value -replace '`', '' -replace '\(.*$', '').Trim() -notmatch '^(null)?$'
+    Add-Row 'Imagery cap (contract line)' $capSet $(if ($cap) { ($cap.Matches[0].Groups[1].Value -replace '\(.*$', '').Trim() }) 'set "**Imagery budget:** USD <n> per project" (or per month, or none) in the contract; the image toolkit refuses paid runs without it'
+  }
 } finally { Pop-Location }
 
 "Studio toolchain check: $Project"
