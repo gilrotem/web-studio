@@ -43,15 +43,19 @@ regulated-profession lines in `hebrew-rtl-israel` were widened from one professi
 
 ## Third-party packs carried as they were
 
-| Pack | Skills | What the files record |
-|---|---|---|
-| GSAP | `gsap-core`, `gsap-timeline`, `gsap-scrolltrigger`, `gsap-plugins`, `gsap-utils`, `gsap-performance`, `gsap-react`, `gsap-frameworks` | "Official GSAP skill"; `license: MIT` in each frontmatter |
-| Web Interface Guidelines | `web-design-guidelines` | `metadata.author: vercel`, version 1.0.0; no licence line |
-| Animation craft | `animate`, `animation-performance`, `review-animations` | credit Emil Kowalski's animation and design-engineering philosophy in their text; no licence line |
-| three.js | `threejs-shaders`, `threejs-postprocessing`, `threejs-performance`, `threejs-asset-pipeline` | no author or licence line |
+Each was traced to its source repository on 2026-11-10 (the skill folders were found there by
+name) and its licence read from that repository. The notices are in `docs/licences/`.
 
-The packs without a licence line were not traced to their source repositories during packaging.
-That is fine for a private kit and is the open item before this repository could be made public.
+| Pack | Skills | Source | Licence |
+|---|---|---|---|
+| GSAP | `gsap-core`, `gsap-timeline`, `gsap-scrolltrigger`, `gsap-plugins`, `gsap-utils`, `gsap-performance`, `gsap-react`, `gsap-frameworks` | https://github.com/greensock/gsap-skills | MIT, © 2026 GreenSock (`gsap-skills-MIT.txt`) |
+| three.js | `threejs-shaders`, `threejs-postprocessing`, `threejs-performance`, `threejs-asset-pipeline` | https://github.com/CloudAI-X/threejs-skills | MIT, © 2026 CloudAI-X (`threejs-skills-MIT.txt`) |
+| Animation craft | `animate`, `animation-performance`, `review-animations` | https://github.com/emilkowalski/skill | MIT, © 2026 Emil Kowalski (`emilkowalski-skill-MIT.txt`) |
+| Web Interface Guidelines | `web-design-guidelines` | https://github.com/vercel-labs/agent-skills | MIT per that repository's README (it ships no licence file). The guidelines the skill fetches are https://github.com/vercel-labs/web-interface-guidelines, MIT, © 2025 Vercel Labs (`vercel-web-interface-guidelines-MIT.txt`) |
+
+These skills are here as they were carried into the project the kit was packaged from. They were
+not diffed against the current upstream, so they may be older than the source; for the latest
+version install from the source repositories.
 
 ## The research
 

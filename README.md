@@ -30,8 +30,6 @@ it on real work is `skills/studio/references/practices.md`.
 
 ## Install
 
-The repository is private; the GitHub account behind the Claude Code session needs read access.
-
 ```
 /plugin marketplace add gilrotem/web-studio
 /plugin install web-studio@web-studio
@@ -45,7 +43,7 @@ To pin a project to a version, add the marketplace at a tag in the project's
   "enabledPlugins": { "web-studio@web-studio": true },
   "extraKnownMarketplaces": {
     "web-studio": {
-      "source": { "source": "github", "repo": "gilrotem/web-studio", "ref": "v1.0.1" },
+      "source": { "source": "github", "repo": "gilrotem/web-studio", "ref": "v1.0.2" },
       "autoUpdate": false
     }
   }
@@ -191,6 +189,13 @@ value, no decision id, no path from someone's machine.
 
 ## Provenance and licence
 
-Where each skill came from, and the licences of the parts that were not written here, is in
-`docs/PROVENANCE.md`. The repository is private; several carried packs have no licence recorded
-in their files, so it is not to be made public before that is checked.
+MIT, © 2026 Gil Rotem (`LICENSE`). Use it, change it, build your own studio on it.
+
+Four skill packs here were written by others and are carried under their own MIT licences: the
+GSAP skills (GreenSock), the three.js skills (CloudAI-X), `animate`, `animation-performance` and
+`review-animations` (Emil Kowalski), and `web-design-guidelines` (Vercel Labs). Their sources are
+in `docs/PROVENANCE.md` and their notices in `docs/licences/`. If you want those packs at their
+latest version, install them from their own repositories.
+
+The research under `skills/craft-research/` is dated evidence (November 2026) with a source link
+on every claim; it describes real public websites as they were read on that date.

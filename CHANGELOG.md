@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.2 — 2026-11-10
+
+- Published under the MIT licence (`LICENSE`).
+- The four third-party skill packs were traced to their source repositories; their MIT notices
+  are in `docs/licences/` and their sources in `docs/PROVENANCE.md`.
+
 ## 1.0.1 — 2026-11-10
 
 - `video-production`: hands and silhouette are stated as the default for every film. A sharp

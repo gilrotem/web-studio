@@ -1,11 +1,11 @@
 {
   "name": "web-studio",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A web design studio for Claude Code: specification, research, foundations, art direction, build, review and delivery, run stage by stage to the Art Director's written lock. Hebrew and RTL first. Carries image and video generation on fal.ai, GSAP and three.js craft, a jury gate and a WordPress theme delivery.",
   "author": {
     "name": "Gil Rotem"
   },
   "repository": "https://github.com/gilrotem/web-studio",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "keywords": ["design", "web-design", "studio", "specification", "rtl", "hebrew", "gsap", "wordpress", "fal"]
 }
