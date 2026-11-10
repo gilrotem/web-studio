@@ -2,11 +2,11 @@
   "mcpServers": {
     "chrome-devtools": {
       "command": "cmd",
-      "args": ["/c", "npx", "-y", "chrome-devtools-mcp@latest"]
+      "args": ["/c", "npx", "-y", "chrome-devtools-mcp@1.12.0"]
     },
     "playwright": {
       "command": "cmd",
-      "args": ["/c", "npx", "-y", "@playwright/mcp@latest"]
+      "args": ["/c", "npx", "-y", "@playwright/mcp@0.0.84"]
     },
     "mobbin": {
       "type": "http",

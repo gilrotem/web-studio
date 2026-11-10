@@ -3,8 +3,10 @@
 #
 #   powershell -ExecutionPolicy Bypass -File tools\vendor.ps1 -Target C:\path\to\project [-Force] [-WithMcp]
 #
-# Copies skills\ -> <project>\.claude\skills\ and commands\ -> <project>\.claude\commands\, and
-# writes the kit version and commit into <project>\.claude\web-studio.version.
+# Copies skills\ -> <project>\.claude\skills\, commands\ -> <project>\.claude\commands\ and
+# hooks\ -> <project>\.claude\hooks\, and writes the kit version and commit into
+# <project>\.claude\web-studio.version. It prints the fal-guard hook block for the project's
+# .claude\settings.json; adding it there is the project's own step.
 # Without -Force it refuses to replace a skill or command that already exists in the project and
 # lists the collisions. With -WithMcp it also writes the three MCP servers into the project's
 # .mcp.json when the project has none (it never edits an existing .mcp.json).
@@ -25,7 +27,8 @@ $claude = Join-Path $Target '.claude'
 
 $plan = @(
   @{ From = Join-Path $kit 'skills';   To = Join-Path $claude 'skills';   Kind = 'dir'  },
-  @{ From = Join-Path $kit 'commands'; To = Join-Path $claude 'commands'; Kind = 'file' }
+  @{ From = Join-Path $kit 'commands'; To = Join-Path $claude 'commands'; Kind = 'file' },
+  @{ From = Join-Path $kit 'hooks';    To = Join-Path $claude 'hooks';    Kind = 'file' }
 )
 
 $collisions = @()
@@ -65,5 +68,10 @@ if ($WithMcp) {
 
 $skills = (Get-ChildItem (Join-Path $claude 'skills') -Directory).Count
 $commands = (Get-ChildItem (Join-Path $claude 'commands') -File).Count
-"Vendored $stamp into $claude : $skills skills, $commands commands."
-"Next: in the project, run the studio-birth skill (it lays down the templates and checks the toolchain), and record the kit version in STATUS.md."
+"Vendored $stamp into $claude : $skills skills, $commands commands, the fal-guard hook."
+""
+"The fal-guard hook is active only once the project's .claude\settings.json carries this block (merge it under ""hooks""; this script does not edit settings):"
+'  "PreToolUse": [ { "matcher": "Bash|Write|Edit|MultiEdit",'
+'    "hooks": [ { "type": "command", "command": "node \"${CLAUDE_PROJECT_DIR}/.claude/hooks/fal-guard.mjs\"", "timeout": 10 } ] } ]'
+""
+"Next: in the project, run the studio-birth skill (it lays down the templates and checks the toolchain), and record the kit version in the design state."

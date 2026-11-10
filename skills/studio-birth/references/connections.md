@@ -15,21 +15,36 @@ declares the same three in its root `.mcp.json`.
 | `chrome-devtools` (`chrome-devtools-mcp`) | reading a reference's computed CSS, performance traces on the mid-tier preset, Lighthouse, console and network | none |
 | `mobbin` (`https://api.mobbin.com/mcp`) | UX patterns from shipped products (`mobbin-research`) | OAuth on a paid Mobbin plan: `/mcp` in an interactive Claude Code session, then start a new session so the tools load |
 
-Windows form (what the plugin ships):
+The server versions are pinned, so every machine runs the same tools: `chrome-devtools-mcp@1.12.0`
+and `@playwright/mcp@0.0.84` (both checked on npm on 2026-11-10). Raising a pin is a kit change:
+change both forms below, note it in `CHANGELOG.md`, tag.
+
+Windows form (what the plugin ships in `.mcp.json`):
 
 ```json
 {
   "mcpServers": {
-    "chrome-devtools": { "command": "cmd", "args": ["/c", "npx", "-y", "chrome-devtools-mcp@latest"] },
-    "playwright":      { "command": "cmd", "args": ["/c", "npx", "-y", "@playwright/mcp@latest"] },
+    "chrome-devtools": { "command": "cmd", "args": ["/c", "npx", "-y", "chrome-devtools-mcp@1.12.0"] },
+    "playwright":      { "command": "cmd", "args": ["/c", "npx", "-y", "@playwright/mcp@0.0.84"] },
     "mobbin":          { "type": "http", "url": "https://api.mobbin.com/mcp" }
   }
 }
 ```
 
-macOS and Linux form: the same, with `"command": "npx"` and `"args": ["-y", "<package>@latest"]`.
-On those systems, replace the plugin's `.mcp.json` entries or declare the servers in the
-project's own `.mcp.json` and disable the plugin's.
+macOS and Linux form (`npx` runs directly, without `cmd /c`):
+
+```json
+{
+  "mcpServers": {
+    "chrome-devtools": { "command": "npx", "args": ["-y", "chrome-devtools-mcp@1.12.0"] },
+    "playwright":      { "command": "npx", "args": ["-y", "@playwright/mcp@0.0.84"] },
+    "mobbin":          { "type": "http", "url": "https://api.mobbin.com/mcp" }
+  }
+}
+```
+
+On those systems, declare the servers in the project's own `.mcp.json` in this form and disable
+the plugin's copies of the two `npx` servers in `/mcp`.
 
 When a server is missing or not signed in: say which one and what it blocks, and carry on with
 what does not need it. Mobbin missing blocks only the UX-pattern pulls; never work around it by
@@ -45,8 +60,12 @@ looking at a page; it cannot stand in for the scripted captures.
   `.env.example` in the project shows the name with an empty value.
 - The key belongs to the project (or to the Art Director's machine), never to the kit's
   repository.
-- Spending is capped by the contract's "Imagery budget" line. Every run prints its estimate and
-  logs it to `runs.jsonl`. Above the cap is a confirm-first action.
+- Spending is capped by the contract's `**Imagery budget:**` line (`USD <n> per project`,
+  `USD <n> per month`, or `none`). The toolkit prices every run and refuses one that would pass
+  the cap, dry runs included; every paid call is a line in `design/spend.jsonl`. Raising the cap
+  is the Art Director's change to that line.
+- The plugin's `fal-guard` hook refuses a direct fal call, or a fal caller written outside the
+  toolkit, before it runs.
 - Skills: `fal-image` (images: generate, edit, gate), `video-production` (video), and
   `asset-pipeline` (local optimisation, no key needed).
 
@@ -86,10 +105,11 @@ As a plugin (the normal way), in the project or at user scope:
 ```
 
 Pinning a version: add the marketplace at a tag in the project's `.claude/settings.json`
-(`extraKnownMarketplaces` with `"ref": "v1.0.2"`), so a project keeps the kit it was born on
+(`extraKnownMarketplaces` with `"ref": "v1.1.0"`), so a project keeps the kit it was born on
 until it is upgraded on purpose.
 
 Vendored (when a project must carry the skills in its own repository): from a clone of the kit,
-`tools\vendor.ps1 -Target <project path>` copies `skills/` and `commands/` into the project's
-`.claude/`, and writes the kit version into `.claude/web-studio.version`. Vendored and plugin
+`tools\vendor.ps1 -Target <project path>` copies `skills/`, `commands/` and `hooks/` into the
+project's `.claude/`, writes the kit version into `.claude/web-studio.version`, and prints the
+`fal-guard` hook block for the project's `.claude/settings.json` (it never edits settings). Vendored and plugin
 installs are not combined in one project: the same skill would load twice.

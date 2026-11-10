@@ -1,7 +1,7 @@
 {
   "name": "web-studio",
-  "version": "1.0.2",
-  "description": "A web design studio for Claude Code: specification, research, foundations, art direction, build, review and delivery, run stage by stage to the Art Director's written lock. Hebrew and RTL first. Carries image and video generation on fal.ai, GSAP and three.js craft, a jury gate and a WordPress theme delivery.",
+  "version": "1.1.0",
+  "description": "A web design studio for Claude Code: a site in four locks or a page in two, from one round of questions to a locked design built as a working site in clean code. Runs standalone or as the design practice inside an agency-harness kernel project. Hebrew and RTL first. Carries an image toolkit on fal.ai with an enforced cap, GSAP and three.js craft, Hebrew type packs, a measured render check, a jury gate, and a WordPress adaptation for after the last lock.",
   "author": {
     "name": "Gil Rotem"
   },

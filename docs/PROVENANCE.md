@@ -41,6 +41,32 @@ directory and its parents) instead of three levels above its own file, and gaine
 section; `wp-theme` gained the conversion order and a generalised hosting section; the
 regulated-profession lines in `hebrew-rtl-israel` were widened from one profession to any.
 
+## Ported from the old studio folder (1.1.0, 2026-11-10)
+
+From the studio folder the kit grew out of, compared file by file first, and taken only where
+the old version had what the kit had lost. Client names were replaced by what the client was
+(an institutional site, a retail site), and no machine path was carried.
+
+- `skills/fal-image/`: the queue-based core with fal's metered cost, the `material`, `vector`,
+  `plate-edit` and `fill` routes, `batch.mjs`, `sheet.py`, the per-project gate config,
+  `PROTOCOL.md` and `MAINTENANCE.md`. New in the kit: the key found from the project, the
+  enforced imagery cap, the spend ledger, `selftest.mjs`.
+- `hooks/fal-guard.mjs`, shipped as the plugin's PreToolUse hook (`hooks/hooks.json`).
+- `skills/visual-verify/scripts/`: the render harness's settle, identity and evidence checks and
+  its measured audit (contrast computed and sampled from pixels, body size, line length,
+  gradient text, RTL ranges), with its 28-check selftest and fixture. The sheet, pass ledger and
+  extract commands were not ported.
+- `skills/system-packs/`: the canon, four packs (two renamed after their register), the
+  generator and checker, the CLI, the measured Hebrew font table, the specimen and the selftest.
+  The archived rhythm session and the generated proofs were not carried.
+- `skills/signature/`: the canon's line-height numbers (display 1.0–1.25, reading 1.5–1.8).
+
+## Written for 1.1.0
+
+- `skills/redesign-review/` and the scaffold's `docs/design/STATE.md` (host mode).
+- `skills/web-design-guidelines/references/guidelines-2026-11-10.md`: a dated snapshot of
+  `command.md` from vercel-labs/web-interface-guidelines (MIT), in place of a run-time fetch.
+
 ## Third-party packs carried as they were
 
 Each was traced to its source repository on 2026-11-10 (the skill folders were found there by
@@ -51,7 +77,7 @@ name) and its licence read from that repository. The notices are in `docs/licenc
 | GSAP | `gsap-core`, `gsap-timeline`, `gsap-scrolltrigger`, `gsap-plugins`, `gsap-utils`, `gsap-performance`, `gsap-react`, `gsap-frameworks` | https://github.com/greensock/gsap-skills | MIT, © 2026 GreenSock (`gsap-skills-MIT.txt`) |
 | three.js | `threejs-shaders`, `threejs-postprocessing`, `threejs-performance`, `threejs-asset-pipeline` | https://github.com/CloudAI-X/threejs-skills | MIT, © 2026 CloudAI-X (`threejs-skills-MIT.txt`) |
 | Animation craft | `animate`, `animation-performance`, `review-animations` | https://github.com/emilkowalski/skill | MIT, © 2026 Emil Kowalski (`emilkowalski-skill-MIT.txt`) |
-| Web Interface Guidelines | `web-design-guidelines` | https://github.com/vercel-labs/agent-skills | MIT per that repository's README (it ships no licence file). The guidelines the skill fetches are https://github.com/vercel-labs/web-interface-guidelines, MIT, © 2025 Vercel Labs (`vercel-web-interface-guidelines-MIT.txt`) |
+| Web Interface Guidelines | `web-design-guidelines` | https://github.com/vercel-labs/agent-skills | MIT per that repository's README (it ships no licence file). The guidelines are carried as a dated snapshot of https://github.com/vercel-labs/web-interface-guidelines, MIT, © 2025 Vercel Labs (`vercel-web-interface-guidelines-MIT.txt`) |
 
 These skills are here as they were carried into the project the kit was packaged from. They were
 not diffed against the current upstream, so they may be older than the source; for the latest
