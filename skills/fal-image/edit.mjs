@@ -1,113 +1,120 @@
 #!/usr/bin/env node
 /**
- * Studio image edit. The one editor; every project calls this.
+ * The kit's image edit. The one editor; every project calls this.
  *
  *   node edit.mjs --image PATH --prompt "..." --out DIR --tag name
  *   node edit.mjs --image PATH --ref A.jpg --ref B.jpg --prompt "..." --job cast
+ *   node edit.mjs --image PATH --mask MASK.png --prompt "..." --job fill
+ *   node edit.mjs --image PATH --job cutout
  *
- * Output size follows the SOURCE image unless told otherwise. That is the whole
- * point: left to itself the endpoint returns a 2K-class frame, which upscales an
- * already approved image and bills it at fal's upper tier. An approved frame is
- * frozen creative capital and does not get resampled on the way through.
+ * --job    edit | cast | plate-edit | fill | cutout   (default: edit)
+ * --ref    extra reference image; repeat the flag. `cast` allows 3.
+ * --mask   fill only: white = redraw, black = keep.
+ * --size   WxH explicit output size.
+ * --raw    keep the source size even above the 1-unit line (bills double).
+ * --dry    print size and cost and check the cap; call nothing.
  *
- * --job    edit | cast   (default: edit)
- * --ref    extra reference image; repeat the flag. Capped per job class.
- * --size   WxH to override, or `2k` / `1k` to hand the choice back to fal.
- * --cap    shrink under the lower-tier ceiling when the source is larger.
- * --model  override, e.g. seedream-4-edit for a deliberate cheap pass.
+ * Output follows the SOURCE, capped under the 1-unit line. Left alone the
+ * endpoint returns a 2K-class frame and bills it double; and an edit of a frame
+ * that is already above the line (2816x1584, 2880x2000, 2048x2048 ...) would
+ * keep paying double on every pass of its line. Capped, it pays once.
  */
 
 import path from 'node:path';
 import {
-  parseArgs, parseSize, resolveKey, callFal, download, logRun, toDataUri,
-  dimsOf, capToTier, tierOf, estimateCost,
+  parseArgs, parseSize, str, resolveKey, callFal, download, logRun, toDataUri, modelOf,
+  dimsOf, capToTier, tierOf, estimateCost, actualCost, enforceCap,
 } from './fal.mjs';
-import { resolveJob, printRoutes } from './routes.mjs';
+import { resolveJob, printRoutes, DEFAULT_EDIT } from './routes.mjs';
 
-const argv = process.argv.slice(2);
-const args = parseArgs(argv);
-
+const args = parseArgs();
 if (args.routes) { printRoutes(); process.exit(0); }
 
-if (!args.image || args.image === true || !args.prompt || args.prompt === true) {
-  console.error('usage: node edit.mjs --image PATH --prompt "..." [--job edit|cast] [--ref PATH]... [--out DIR] [--tag name]');
+const jobName = str(args.job, DEFAULT_EDIT);
+let job;
+try { job = resolveJob(jobName, 'edit'); } catch (e) { console.error(e.message); process.exit(1); }
+const modelName = str(args.model, job.model);
+const model = modelOf(modelName);
+
+const image = str(args.image);
+const prompt = str(args.prompt);
+if (!image || (model.shape !== 'cutout' && !prompt)) {
+  console.error('usage: node edit.mjs --image PATH --prompt "..." [--job edit|cast|plate-edit|fill] [--ref PATH]... [--out DIR] [--tag name]');
+  console.error('       node edit.mjs --image PATH --job cutout [--out DIR]');
   process.exit(1);
 }
-
-// --ref may repeat, which the generic parser cannot express.
-const refs = [];
-for (let i = 0; i < argv.length; i += 1) {
-  if (argv[i] === '--ref' && argv[i + 1] && !argv[i + 1].startsWith('--')) refs.push(argv[i + 1]);
-}
-
-const jobName = args.job === true ? 'edit' : (args.job || 'edit');
-const job = resolveJob(jobName);
-const model = (args.model && args.model !== true) ? args.model : job.model;
-
+const refs = [].concat(args.ref ?? []).filter((r) => typeof r === 'string');
 if (job.maxRefs && refs.length > job.maxRefs) {
-  console.error('--job ' + jobName + ' caps references at ' + job.maxRefs + ', got ' + refs.length + '.');
-  console.error('Identity preservation is measured collapsing past that point. Trim the stack or use --job edit deliberately.');
+  console.error('--job ' + jobName + ' allows ' + job.maxRefs + ' references, got ' + refs.length + '. Identity preservation collapses past that point.');
+  process.exit(1);
+}
+const mask = str(args.mask);
+if (model.shape === 'flux-fill' && !mask) { console.error('--job fill needs --mask PATH (white = redraw)'); process.exit(1); }
+
+// --- output size --------------------------------------------------------
+const src = dimsOf(image);
+let size = null;
+let note = '';
+if (str(args.size)) { size = parseSize(args.size); note = 'explicit'; }
+else if (!src) note = 'source unreadable, fal decides';
+else if (job.size === 'source' && model.unit === 'area unit' && !args.raw) {
+  size = capToTier(src);
+  note = size.width === src.width ? 'matches source' : 'source ' + src.width + 'x' + src.height + ', capped to 1 unit (--raw keeps it, at double price)';
+} else { size = src; note = 'matches source'; }
+const px = size ? size.width * size.height : null;
+const each = estimateCost(modelName, model.shape === 'flux-fill' ? (src ? src.width * src.height : null) : px);
+
+console.log('job ' + jobName + '  model ' + modelName + (refs.length ? '  refs ' + refs.length : ''));
+if (size) console.log('size ' + size.width + 'x' + size.height + '  ' + (px / 1e6).toFixed(2) + 'MP'
+  + (model.unit === 'area unit' ? '  ' + tierOf(px) : '') + '  (' + note + ')');
+else console.log('size - (' + note + ')');
+if (each !== null) console.log('est  $' + each.toFixed(4));
+if (model.unit === 'area unit' && !src && !str(args.size)) {
+  console.error('Refusing: the source size is unreadable, so fal would pick a 2K frame and bill it double. Pass --size WxH.');
+  process.exit(1);
+}
+enforceCap(each ?? 0, 'edit ' + jobName);
+if (args.dry) { console.log('--dry: nothing sent'); process.exit(0); }
+
+// --- request ------------------------------------------------------------
+const key = await resolveKey();
+let body;
+if (model.shape === 'seedream-edit') {
+  body = {
+    prompt,
+    image_urls: [await toDataUri(image), ...(await Promise.all(refs.map(toDataUri)))],
+    num_images: 1, output_format: 'jpeg', enable_safety_checker: false,
+  };
+  if (size) body.image_size = size;
+} else if (model.shape === 'flux-fill') {
+  body = { prompt, image_url: await toDataUri(image), mask_url: await toDataUri(mask), num_images: 1, output_format: 'jpeg', safety_tolerance: '5' };
+} else if (model.shape === 'cutout') {
+  body = { image_url: await toDataUri(image), output_format: 'png' };
+} else {
+  console.error(modelName + ' is not an image-in model; use generate.mjs');
   process.exit(1);
 }
 
-// --- output size -------------------------------------------------------
-let size = null;
-let sizeNote = '';
-if (args.size === '2k') { size = 'auto_2K'; sizeNote = 'fal decides (2K)'; }
-else if (args.size === '1k') { size = 'auto_1K'; sizeNote = 'fal decides (1K)'; }
-else if (args.size && args.size !== true) { size = parseSize(args.size); sizeNote = 'explicit'; }
-else {
-  const d = dimsOf(args.image);
-  if (!d) {
-    console.log('note: source dimensions unreadable, letting fal decide (this is the 2x-tier default)');
-  } else {
-    size = d;
-    sizeNote = 'matched to source';
-    if (args.cap) {
-      const capped = capToTier(size);
-      if (capped.width !== size.width) { size = capped; sizeNote = 'source, capped to lower tier'; }
-    }
-  }
-}
-
-const px = size && typeof size === 'object' ? size.width * size.height : null;
-const each = px ? estimateCost(model, px, refs.length + 1) : null;
-
-console.log('job ' + jobName + '  model ' + model + (refs.length ? '  refs ' + refs.length : ''));
-if (px) {
-  console.log('size ' + size.width + 'x' + size.height + '  ' + (px / 1e6).toFixed(2) + 'MP  ' + tierOf(px) + ' tier  (' + sizeNote + ')');
-  if (tierOf(px) !== 'lower' && !args.cap) console.log('  pass --cap to fit the lower tier');
-  if (each !== null) console.log('est  $' + each.toFixed(4));
-}
-
-const key = await resolveKey();
-const urls = [await toDataUri(args.image)];
-for (const r of refs) urls.push(await toDataUri(r));
-
-const body = {
-  prompt: args.prompt,
-  image_urls: urls,
-  num_images: 1,
-  output_format: 'jpeg',
-  enable_safety_checker: false,
-};
-if (size) body.image_size = size;
-
-const outDir = path.resolve(args.out && args.out !== true ? args.out : '.');
-const tag = args.tag && args.tag !== true ? args.tag : 'edit';
+const outDir = path.resolve(str(args.out, '.'));
+const tag = str(args.tag, jobName);
 
 try {
-  const data = await callFal(model, body, { key });
-  const img = data.images?.[0];
+  const data = await callFal(modelName, body, { key });
+  const img = data.image ?? data.images?.[0];
   if (!img?.url) throw new Error('no image in response');
-  const dest = path.join(outDir, tag + '.jpg');
+  const dest = path.join(outDir, tag + (model.shape === 'cutout' ? '.png' : '.jpg'));
   await download(img.url, dest);
+  const units = data.__fal?.billable ?? null;
+  const usd = actualCost(modelName, data);
   await logRun(outDir, {
-    tool: 'edit', job: jobName, model, tag,
-    source: args.image, refs, size: size ?? 'fal-default', px, est_usd: each,
-    prompt: args.prompt, dest,
+    tool: 'edit', job: jobName, model: modelName, endpoint: model.id, tag,
+    source: image, source_size: src, refs, mask, size: size ?? 'fal-default',
+    billable_units: units, usd: usd ?? each, usd_source: usd !== null ? 'fal meter' : 'estimate',
+    fal_request_id: data.__fal?.requestId ?? null,
+    prompt: prompt ?? null, dest,
   });
-  console.log('OK   ' + dest);
+  console.log('OK   ' + dest + (units ? '  billed ' + units + ' ' + model.unit + (usd !== null ? ' = $' + usd.toFixed(4) : '') : ''));
+  if (model.shape === 'cutout') console.log('     composite locally with sharp; never spend a paid edit call on a background swap');
 } catch (e) {
   console.error('FAIL ' + e.message);
   process.exit(1);

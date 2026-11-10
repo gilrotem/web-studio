@@ -1,53 +1,59 @@
 #!/usr/bin/env node
 /**
- * The pre-filter. Sits between the generation loop and the folder the Art
- * Director opens, and removes the obvious misses so a human only spends
- * attention on candidates that are actually in the running.
+ * The pre-filter. OPTIONAL. Sorts a folder of candidates so a human spends
+ * attention only on the ones actually in the running.
  *
  *   node gate.mjs --in round3-medal --spec ../../spec/icon-language.md
  *   node gate.mjs --in round3-medal --dry          # calibrate, move nothing
+ *
+ * What it costs, and what it does not save: every call is $0.01 on fal's vision
+ * endpoint, and it runs AFTER the generation is paid for. It saves review time,
+ * never fal spend. Images are judged in batches (default 4 per call), so a
+ * round of three costs one cent, not three.
  *
  * WHAT IT DOES NOT DO, and this is the design, not a limitation:
  *   - it never ranks aesthetics
  *   - it never picks a winner
  *   - it never deletes anything
- * Vision models agree with human reviewers about 86% of the time, which is
- * enough to sort a pile and nowhere near enough to make a call. A gate tuned
- * tight enough to have opinions silently kills the interesting candidates, so
- * this one is tuned for RECALL on objective misses and nothing else.
+ * Vision models agree with human reviewers well enough to sort a pile and
+ * nowhere near enough to make a call, so this is tuned for RECALL on objective
+ * misses and nothing else.
  *
  * --in      directory of candidates (required)
  * --spec    world-spec / contract file; its text becomes the checklist context
  * --checks  extra checks inline, semicolon separated
+ * --batch   images per vision call, 1-6 (default 4)
  * --model   vision model (default google/gemini-2.5-flash-lite)
- * --dry     report only, move nothing
+ * --dry     report only, move nothing (the vision calls still run and still cost)
+ *
+ * The calls are paid, so the run is checked against the project's imagery cap
+ * first (fal.mjs, "the cap") and every call is a line in design/spend.jsonl.
  * --strict  treat "flag" as "fail" (not recommended; raises the kill rate)
  */
 
 import { readdir, readFile, rename, mkdir, appendFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
-import { parseArgs, resolveKey, callFal, toDataUri, ENDPOINTS } from './fal.mjs';
-
-ENDPOINTS['any-llm-vision'] = 'https://fal.run/fal-ai/any-llm/vision';
+import { parseArgs, str, resolveKey, callFal, toDataUri, actualCost, MODELS, enforceCap, logSpend } from './fal.mjs';
 
 const args = parseArgs();
-if (!args.in || args.in === true) {
-  console.error('usage: node gate.mjs --in DIR [--spec FILE] [--checks "a; b; c"] [--dry]');
+if (!str(args.in)) {
+  console.error('usage: node gate.mjs --in DIR [--spec FILE] [--checks "a; b; c"] [--batch 4] [--dry]');
   process.exit(1);
 }
 
 const inDir = path.resolve(args.in);
-const model = args.model && args.model !== true ? args.model : 'google/gemini-2.5-flash-lite';
+const model = str(args.model, 'google/gemini-2.5-flash-lite');
 const dry = Boolean(args.dry);
 const strict = Boolean(args.strict);
+const batchSize = Math.max(1, Math.min(6, Number(args.batch) || 4));
 
 // --- the checklist -----------------------------------------------------
 let specText = '';
-if (args.spec && args.spec !== true && existsSync(args.spec)) {
+if (str(args.spec) && existsSync(args.spec)) {
   specText = (await readFile(args.spec, 'utf8')).slice(0, 6000);
 }
-const extraChecks = args.checks && args.checks !== true ? String(args.checks) : '';
+const extraChecks = str(args.checks, '');
 
 // Per-image prompts, if the generator logged them.
 const prompts = new Map();
@@ -62,53 +68,93 @@ if (existsSync(ledger)) {
   }
 }
 
-// Standing studio law, applied to EVERY image whatever the prompt says.
-// Calibration on eight judged rounds showed that prompt-derived context alone
-// is too soft: the prompts hedge their own negatives ("no OTHER text", because
-// the scene deliberately wants a 7 on a chip), so the gate waved through the
-// baked-in lettering that later cost a whole extra round to edit out.
-const STANDING = [
-  'READABLE LETTERING: no words, sentences, UI labels, nameplates, captions, chat lines, buttons or signage anywhere in the frame. A single stylised glyph or numeral on a prop (a "7" or "XL" on a chip, a suit on a card) is fine. Words are not, even when the prompt only forbade "other" text.',
-  'BRAND MARKS: no logos, wordmarks or watermarks. Branding lives in the DOM layer, never inside the image.',
-  'ANATOMY: hands, faces and limbs structurally intact where visible.',
-];
+// Standing law, applied to EVERY image whatever the prompt says. Prompts hedge
+// their own negatives ("no OTHER text", because the scene wants a 7 on a chip),
+// so prompt context alone waves baked-in lettering through.
+//
+// One rule cannot serve every project: a stylised illustrated world bans
+// lettering outright, a photoreal car necessarily carries a plate. A project
+// overrides in `design/gate.config.json`:
+// { "standing": { "lettering": "...", "brand": "...", "anatomy": "..." } }.
+const STANDING_DEFAULT = {
+  lettering: 'READABLE LETTERING: no words, sentences, UI labels, nameplates, captions, chat lines, buttons or signage anywhere in the frame. A single stylised glyph or numeral on a prop (a numeral on a token, a suit on a card) is fine. Words are not, even when the prompt only forbade "other" text.',
+  brand: 'BRAND MARKS: no logos, wordmarks or watermarks. Branding lives in the DOM layer, never inside the image.',
+  anatomy: 'ANATOMY: hands, faces and limbs structurally intact where visible.',
+};
 
-// Some defects end a candidate; others are removed by one pass of the edit
-// pipeline. Killing an otherwise-best frame over a fixable defect is the
-// expensive mistake, so fixable defects flag rather than fail.
+/** Walk up from the candidate folder looking for the project's gate config. */
+async function loadStanding(fromDir) {
+  let dir = path.resolve(fromDir);
+  for (let i = 0; i < 8; i += 1) {
+    const cfg = [path.join(dir, 'gate.config.json'), path.join(dir, 'design', 'gate.config.json')].find((p) => existsSync(p));
+    if (cfg) {
+      try {
+        const json = JSON.parse(await readFile(cfg, 'utf8'));
+        return [{ ...STANDING_DEFAULT, ...(json.standing || {}) }, cfg];
+      } catch (e) {
+        console.log('note: ignoring unreadable ' + cfg + ' (' + e.message + ')');
+      }
+    }
+    const up = path.dirname(dir);
+    if (up === dir) break;
+    dir = up;
+  }
+  return [STANDING_DEFAULT, null];
+}
+
+const [STANDING, standingFrom] = await loadStanding(inDir);
+
+// The model DETECTS; this file DECIDES. Asking a vision model for the verdict
+// itself proved unstable: the same three images came back pass/pass/fail,
+// flag/flag/flag and flag/flag/fail on three runs (21/9/2026). So the model
+// only names the worst defect from a closed list, at temperature 0, and the
+// verdict follows from that list by fixed policy below.
+//
+// Fatal defects end a candidate. Fixable ones are removed by one edit pass,
+// and killing an otherwise-best frame over a fixable defect is the expensive
+// mistake, so they only flag.
+const FATAL = new Set(['anatomy', 'missing-subject', 'wrong-count', 'artefact']);
+const FIXABLE = new Set(['lettering', 'brand', 'zone', 'other']);
+
 const SYSTEM = [
-  'You are a production quality gate for generated imagery. You judge OBJECTIVE, checkable facts only.',
-  'You do NOT judge beauty, style, taste, composition quality, or which image is best. Those belong to the Art Director.',
+  'You are a production quality inspector for generated imagery. You report OBJECTIVE, checkable defects only.',
+  'You do NOT judge beauty, style, taste, composition quality, or which image is best.',
   '',
   'Standing rules that apply to EVERY image regardless of what the prompt says:',
-  ...STANDING.map((s) => '  - ' + s),
+  ...Object.values(STANDING).filter(Boolean).map((s) => '  - ' + s),
   '',
-  'Choose the verdict by whether the defect is FATAL or FIXABLE.',
-  '"fail" - fatal, the frame cannot be rescued:',
-  '  - anatomy clearly broken (malformed hands, extra or missing limbs, collapsed faces)',
-  '  - a subject the prompt explicitly required is plainly absent',
-  '  - a count the prompt specified is plainly wrong',
-  '  - severe artefacts: melted geometry, duplicated subjects, heavy banding',
-  '"flag" - real defect, but one edit pass removes it, so the Art Director still gets to see it:',
-  '  - readable lettering, signage or a watermark',
-  '  - a brand mark',
-  '  - a reserved-empty zone lightly occupied by something removable',
-  '  - anything questionable or arguable',
-  '"pass" - nothing objectively wrong.',
-  '',
-  'If you are unsure, pass it. If a rule seems to contradict the prompt, prefer "flag" over "fail" and say so in the reason.',
-  'Never fail an image for a composition or framing preference. That is taste, and taste is not yours.',
-  'Answer with STRICT JSON only, no prose and no code fence:',
-  '{"verdict":"pass|flag|fail","reason":"one short sentence"}',
+  'For each image report its single WORST defect as one of these codes:',
+  '  none            - nothing objectively wrong',
+  '  anatomy         - hands, faces or limbs clearly malformed',
+  '  missing-subject - something the prompt explicitly required is plainly absent',
+  '  wrong-count     - a count the prompt specified is plainly wrong',
+  '  artefact        - melted geometry, duplicated subjects, heavy banding',
+  '  lettering       - readable words, UI labels, captions or signage that break the lettering rule',
+  '  brand           - a logo, wordmark or watermark',
+  '  zone            - an area the prompt reserved as empty is occupied',
+  '  other           - a real objective defect not listed above',
+  'If you are unsure whether something is a defect, report none. Composition and framing are never defects.',
+  'Several images may be attached, numbered in the order given. Judge each on its own; never compare them.',
+  'Answer with a STRICT JSON array only, one object per image in order, no prose and no code fence:',
+  '[{"image":1,"defect":"none|anatomy|missing-subject|wrong-count|artefact|lettering|brand|zone|other","reason":"one short sentence"}]',
 ].join('\n');
 
-function checklistFor(file) {
+function verdictOf(defect) {
+  if (defect === 'none') return 'pass';
+  if (FATAL.has(defect)) return 'fail';
+  if (FIXABLE.has(defect)) return 'flag';
+  return 'flag';
+}
+
+function checklistFor(batch) {
   const parts = [];
   if (specText) parts.push('Project spec (context for what this world requires):\n' + specText);
-  const p = prompts.get(path.basename(file));
-  if (p) parts.push('The prompt this image was generated from:\n' + p);
-  if (extraChecks) parts.push('Additional required checks:\n' + extraChecks);
-  parts.push('Judge the attached image against the rules in the system message. Respond with the JSON object only.');
+  batch.forEach((file, i) => {
+    const p = prompts.get(file);
+    parts.push('Image ' + (i + 1) + ' (' + file + ')' + (p ? ', generated from this prompt:\n' + p : ': no prompt on record.'));
+  });
+  if (extraChecks) parts.push('Additional required checks for every image:\n' + extraChecks);
+  parts.push('Judge the ' + batch.length + ' attached image(s) against the rules in the system message. Respond with the JSON array only.');
   return parts.join('\n\n');
 }
 
@@ -119,44 +165,51 @@ const files = (await readdir(inDir))
 
 if (!files.length) { console.log('no images in ' + inDir); process.exit(0); }
 
-console.log('gate  ' + files.length + ' candidates  model ' + model + (dry ? '  [DRY RUN, nothing moves]' : ''));
+const batches = [];
+for (let i = 0; i < files.length; i += batchSize) batches.push(files.slice(i, i + batchSize));
+
+console.log('gate  ' + files.length + ' candidates in ' + batches.length + ' call(s)  est $'
+  + (batches.length * MODELS.vision.rate).toFixed(2) + '  model ' + model + (dry ? '  [DRY RUN, nothing moves]' : ''));
 if (specText) console.log('spec  ' + args.spec);
+if (standingFrom) console.log('rules ' + path.relative(process.cwd(), standingFrom));
 console.log('');
 
+enforceCap(batches.length * MODELS.vision.rate, 'gate (' + batches.length + ' vision call(s))');
 const key = await resolveKey();
+let spent = 0;
 
-async function judge(file) {
-  const full = path.join(inDir, file);
+async function judgeBatch(batch) {
+  const soft = (reason) => batch.map((file) => ({ file, verdict: 'flag', reason }));
   try {
-    const data = await callFal('any-llm-vision', {
+    const data = await callFal('vision', {
       model,
       system_prompt: SYSTEM,
-      prompt: checklistFor(full),
-      image_url: await toDataUri(full),
-    }, { key, quiet: true, timeoutMs: 120000 });
+      prompt: checklistFor(batch),
+      image_urls: await Promise.all(batch.map((f) => toDataUri(path.join(inDir, f)))),
+      temperature: 0,
+    }, { key, quiet: true, waitMs: 180000 });
+    const usd = actualCost('vision', data);
+    spent += usd ?? MODELS.vision.rate;
+    await logSpend({ tool: 'gate', job: 'gate', model: 'vision', usd: usd ?? MODELS.vision.rate, usd_source: usd !== null ? 'fal meter' : 'estimate', fal_request_id: data.__fal?.requestId ?? null, dest: inDir });
 
     const raw = String(data.output ?? data.response ?? '').trim();
-    const m = raw.match(/\{[\s\S]*\}/);
-    if (!m) return { file, verdict: 'flag', reason: 'gate returned unparseable output' };
-    const parsed = JSON.parse(m[0]);
-    const verdict = ['pass', 'flag', 'fail'].includes(parsed.verdict) ? parsed.verdict : 'flag';
-    return { file, verdict, reason: String(parsed.reason || '').slice(0, 160) };
+    // A single image sometimes comes back as a bare object; accept both.
+    const m = raw.match(/\[[\s\S]*\]/) ?? raw.match(/\{[\s\S]*\}/);
+    if (!m) return soft('gate returned unparseable output');
+    const arr = [].concat(JSON.parse(m[0]));
+    return batch.map((file, i) => {
+      const r = arr.find((x) => Number(x.image) === i + 1) ?? arr[i];
+      if (!r) return { file, verdict: 'flag', defect: null, reason: 'no verdict returned for this image' };
+      const defect = String(r.defect || 'other').toLowerCase();
+      return { file, verdict: verdictOf(defect), defect, reason: String(r.reason || '').slice(0, 160) };
+    });
   } catch (e) {
     // A gate that cannot reach its model must not block the work.
-    return { file, verdict: 'flag', reason: 'gate error: ' + e.message.slice(0, 100) };
+    return soft('gate error: ' + e.message.slice(0, 100));
   }
 }
 
-// Modest concurrency: the gate should never be the slow part of a round.
-const results = [];
-const QUEUE = [...files];
-async function worker() {
-  while (QUEUE.length) {
-    const f = QUEUE.shift();
-    results.push(await judge(f));
-  }
-}
-await Promise.all(Array.from({ length: Math.min(4, files.length) }, worker));
+const results = (await Promise.all(batches.map(judgeBatch))).flat();
 results.sort((a, b) => a.file.localeCompare(b.file));
 
 const buckets = { pass: [], flag: [], fail: [] };
@@ -164,7 +217,7 @@ for (const r of results) buckets[r.verdict].push(r);
 
 for (const r of results) {
   const mark = r.verdict === 'pass' ? 'pass' : r.verdict === 'flag' ? 'FLAG' : 'FAIL';
-  console.log('  ' + mark + '  ' + r.file + (r.verdict === 'pass' ? '' : '  - ' + r.reason));
+  console.log('  ' + mark + '  ' + r.file + (r.verdict === 'pass' ? '' : '  - [' + (r.defect ?? '?') + '] ' + r.reason));
 }
 
 // --- move, never delete ------------------------------------------------
@@ -179,16 +232,16 @@ if (!dry) {
 
   for (const r of toReject) await rename(path.join(inDir, r.file), path.join(rejects, r.file));
   for (const r of toFlag) await rename(path.join(inDir, r.file), path.join(flagged, r.file));
-
-  await appendFile(
-    path.join(inDir, 'gate.jsonl'),
-    results.map((r) => JSON.stringify({ at: new Date().toISOString(), model, ...r })).join('\n') + '\n',
-    'utf8',
-  );
 }
 
-const kept = buckets.pass.length;
+// The ledger is written on dry runs too: a calibration run costs money as well.
+await appendFile(
+  path.join(inDir, 'gate.jsonl'),
+  results.map((r) => JSON.stringify({ at: new Date().toISOString(), model, batch: batchSize, dry, ...r })).join('\n') + '\n',
+  'utf8',
+);
+
 console.log('');
-console.log('  ' + kept + ' to review, ' + buckets.flag.length + ' flagged, ' + buckets.fail.length + ' rejected'
+console.log('  ' + buckets.pass.length + ' to review, ' + buckets.flag.length + ' flagged, ' + buckets.fail.length + ' rejected'
   + (dry ? '  (dry run - nothing moved)' : '  -> rejects/ and flagged/, never deleted'));
-if (!dry && buckets.fail.length) console.log('  check rejects/ once this week. If the gate killed something good, loosen the checks.');
+console.log('  gate cost $' + spent.toFixed(2));

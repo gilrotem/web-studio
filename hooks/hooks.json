@@ -1,0 +1,17 @@
+{
+  "description": "fal-guard: fal.ai is reached through the kit's image toolkit and nowhere else, so every paid image call passes the imagery cap and lands in the spend ledger.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/fal-guard.mjs\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

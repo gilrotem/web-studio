@@ -1,80 +1,88 @@
 /**
  * The wall chart, as data.
  *
- * One model family, one host. What changes per job is the RESOLUTION and the
- * DISCIPLINE, because those are the two dials that move money without touching
- * the look. Pass `--job <class>` to any tool and it picks the row for you.
+ * Seedream 5 Pro is the default family. The other rows exist because a project
+ * PROVED a need the default cannot meet, not because a benchmark said so.
+ * Pass `--job <class>` to any tool and it picks the row; `--routes` prints it.
  *
- * Print it any time with:  node generate.mjs --routes
+ * tool:  which script runs the job (generate = text in, edit = image in)
+ * size:  'cap'    -> requested size, shrunk under the 1-unit line
+ *        'source' -> the source image's size, shrunk under the line
+ *        'free'   -> model bills flat, any size
  */
 
 export const JOBS = {
   candidate: {
-    model: 'seedream-pro',
-    cap: true,
-    why: 'A candidate exists to predict the final, so it runs on the same model as the final. Cut this pile with the gate, not with a cheaper model.',
+    tool: 'generate', model: 'seedream-pro', size: 'cap',
+    why: 'Default. A candidate predicts the final, so it runs on the final\'s model. n=2-3, one prompt, one purpose.',
   },
   final: {
-    model: 'seedream-pro',
-    cap: true,
-    why: 'Hero and signature frames. Native resolution only; if more is needed use a PRECISION upscaler, never a generative one.',
+    tool: 'generate', model: 'seedream-pro', size: 'cap',
+    why: 'Hero and signature frames. Native 2048x1152; more width comes from a precision upscale, never a generative one.',
   },
   photoreal: {
-    model: 'seedream-pro',
-    cap: true,
-    why: 'Editorial and architectural. Replaces FLUX 1.1 pro ultra, which scores 892 Elo against this model at 1078 and costs about the same.',
-  },
-  edit: {
-    model: 'seedream-pro-edit',
-    size: 'source',
-    why: 'Surgical single-change edits. Pro is the only Seedream with coordinate-addressable spatial grounding; size follows the source so an approved frame is never resampled.',
-  },
-  cast: {
-    model: 'seedream-pro-edit',
-    size: 'source',
-    maxRefs: 3,
-    why: 'Recurring cast, derived from a stored anchor. Identity preservation is measured collapsing past three references, so the cap is behavioural, not financial.',
-  },
-  plate: {
-    model: 'seedream-lite',
-    why: 'Section and background plates with no cast member and no signature element. Lite bills FLAT at any resolution and has nothing here to hold an identity on.',
-  },
-  oversize: {
-    model: 'seedream-lite',
-    why: 'Anything past 4MP. Pro caps at 2048x2048 and fal publishes no rate above it; Lite reaches 3072x3072. The tiering inverts here.',
+    tool: 'generate', model: 'seedream-pro', size: 'cap',
+    why: 'Editorial and architectural photography, unless the project has proved `material` for its subject.',
   },
   likeness: {
-    model: 'seedream-pro',
-    cap: true,
-    falOnly: true,
-    why: 'Frames carrying a real, identifiable person. A governance class, not a cost class: this never routes to a cheaper reseller, whatever it saves.',
+    tool: 'generate', model: 'seedream-pro', size: 'cap',
+    why: 'Frames carrying a real, identifiable person. Governance class: never routed to a reseller.',
+  },
+  plate: {
+    tool: 'generate', model: 'seedream-lite', size: 'free',
+    why: 'Backgrounds and plates with no cast and no signature element. $0.035 flat at any size up to 3072.',
+  },
+  material: {
+    tool: 'generate', model: 'flux-ultra', size: 'free',
+    why: 'Photography where a project\'s own bake-off chose FLUX 1.1 ultra over Seedream: quiet material and room shots, pure street exteriors with no text zone, landscapes and still lifes; and re-cuts of any frame FLUX made (same --seed). $0.06 flat. Takes an aspect ratio, not pixels.',
+  },
+  vector: {
+    tool: 'generate', model: 'recraft-v3', size: 'free',
+    why: 'Real SVG line illustration. Recraft returns no seed; the file name is the record. Prompt max 1000 chars. Vector styles bill 2 units.',
+  },
+  edit: {
+    tool: 'edit', model: 'seedream-pro-edit', size: 'source',
+    why: 'Surgical single-change edit of an approved frame. Output follows the source, capped under the line: an edit of a 2816x1584 frame comes back 2048x1152 at half price. --raw keeps the source size and pays double.',
+  },
+  cast: {
+    tool: 'edit', model: 'seedream-pro-edit', size: 'source', maxRefs: 3,
+    why: 'Recurring cast derived from a stored anchor. Max 3 references: identity preservation collapses past that.',
+  },
+  'plate-edit': {
+    tool: 'edit', model: 'seedream-lite-edit', size: 'free',
+    why: 'Edits to a plate or background with no cast and no signature element. Lite is an editing-first model and bills $0.035 flat, versus up to $0.135 on Pro.',
+  },
+  fill: {
+    tool: 'edit', model: 'flux-fill', size: 'free',
+    why: 'Masked repair: redraw only the white area of --mask (a room repair, a removed object). $0.05 per megapixel.',
   },
   cutout: {
-    model: 'birefnet',
-    why: 'Mattes for local compositing. Never spend a paid edit call on a background swap.',
+    tool: 'edit', model: 'birefnet', size: 'free',
+    why: 'Matte for local compositing. Never spend a paid edit call on a background swap.',
   },
 };
 
-export const DEFAULT_JOB = 'candidate';
+export const DEFAULT_GENERATE = 'candidate';
+export const DEFAULT_EDIT = 'edit';
 
-export function resolveJob(name) {
-  const job = JOBS[name || DEFAULT_JOB];
-  if (!job) {
-    throw new Error('unknown --job "' + name + '". Known: ' + Object.keys(JOBS).join(', '));
+export function resolveJob(name, tool) {
+  const job = JOBS[name];
+  if (!job) throw new Error('unknown --job "' + name + '". Known: ' + Object.keys(JOBS).join(', '));
+  if (tool && job.tool !== tool) {
+    throw new Error('--job ' + name + ' runs in ' + job.tool + '.mjs, not ' + tool + '.mjs');
   }
   return job;
 }
 
 export function printRoutes() {
   const pad = Math.max(...Object.keys(JOBS).map((k) => k.length)) + 2;
-  console.log('\nJob classes - one model family, one host; resolution and discipline do the work\n');
+  console.log('\nJob classes. Seedream 5 Pro is the default; every other row is a proven exception.\n');
   for (const [name, j] of Object.entries(JOBS)) {
-    const bits = [j.model];
-    if (j.size === 'source') bits.push('size=source');
-    else if (j.cap) bits.push('capped to the lower tier');
-    else bits.push('flat billing, any size');
+    const bits = [j.tool + '.mjs', j.model];
+    if (j.size === 'cap') bits.push('capped to 1 unit');
+    if (j.size === 'source') bits.push('source size, capped to 1 unit');
+    if (j.size === 'free') bits.push('flat billing');
     if (j.maxRefs) bits.push('max ' + j.maxRefs + ' refs');
-    if (j.falOnly) bits.push('fal only');
     console.log('  ' + name.padEnd(pad) + bits.join('  |  '));
     console.log('  ' + ' '.repeat(pad) + j.why + '\n');
   }
