@@ -1,0 +1,15 @@
+web-studio
+Copyright (c) 2026 Gil Rotem. MIT licence, see LICENSE.
+
+This repository also carries skill packs written by others, each under its own
+MIT licence. Their copyright notices are in docs/licences/ and their sources are
+listed in docs/PROVENANCE.md:
+
+- GSAP skills (skills/gsap-*): Copyright (c) 2026 GreenSock
+  https://github.com/greensock/gsap-skills
+- three.js skills (skills/threejs-*): Copyright (c) 2026 CloudAI-X
+  https://github.com/CloudAI-X/threejs-skills
+- animate, animation-performance, review-animations: Copyright (c) 2026 Emil Kowalski
+  https://github.com/emilkowalski/skill
+- web-design-guidelines: Vercel Labs, MIT per the source repository's README
+  https://github.com/vercel-labs/agent-skills

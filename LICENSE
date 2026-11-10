@@ -19,14 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-This repository also carries skill packs written by others, each under its own
-MIT licence. Their copyright notices are in docs/licences/ and their sources are
-listed in docs/PROVENANCE.md:
-
-- GSAP skills (skills/gsap-*): Copyright (c) 2026 GreenSock
-- three.js skills (skills/threejs-*): Copyright (c) 2026 CloudAI-X
-- animate, animation-performance, review-animations: Copyright (c) 2026 Emil Kowalski
-- web-design-guidelines: Vercel Labs (vercel-labs/agent-skills, MIT per its README)
