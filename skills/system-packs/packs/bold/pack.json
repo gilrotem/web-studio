@@ -1,0 +1,229 @@
+{
+  "name": "bold",
+  "title": "נועז — אנרגיה ושירות",
+  "status": "candidate",
+  "provenance": "New, 26/9/2026. Built on the institutional pack's method. Not yet proven on a project.",
+  "register": "Service and trade businesses that sell a visible result: cleaning, renovation, installers, clinics. One family, Heebo, from 800 statements to 400 text; white and a fresh green, a sunny yellow only as a fill; friendly radii.",
+  "fonts": {
+    "display": {
+      "family": "Heebo",
+      "weights": [
+        700,
+        800
+      ]
+    },
+    "text": {
+      "family": "Heebo",
+      "weights": [
+        400,
+        500,
+        700
+      ]
+    }
+  },
+  "color": {
+    "ground": "#FFFFFF",
+    "ground-2": "#F5F8F7",
+    "tint": "#E9F3EF",
+    "mid": "#D5E8E0",
+    "line": "#D2DED9",
+    "ink": "#0E1B17",
+    "ink-2": "#3A4A45",
+    "ink-3": "#58675F",
+    "accent": "#FFC23D",
+    "accent-deep": "#0A6B4F",
+    "accent-tint": "#FFF4D6",
+    "action": "#0A6B4F",
+    "on-action": "#FFFFFF",
+    "band": "#0E1B17",
+    "on-band": "#FFFFFF",
+    "on-band-2": "rgba(255,255,255,.76)"
+  },
+  "allow": {
+    "ground": [
+      "ink",
+      "ink-2",
+      "ink-3",
+      "accent-deep"
+    ],
+    "ground-2": [
+      "ink",
+      "ink-2",
+      "ink-3",
+      "accent-deep"
+    ],
+    "tint": [
+      "ink",
+      "ink-2",
+      "accent-deep"
+    ],
+    "mid": [
+      "ink",
+      "ink-2"
+    ],
+    "action": [
+      "on-action"
+    ],
+    "band": [
+      "on-band",
+      "on-band-2"
+    ],
+    "accent": [
+      "ink"
+    ]
+  },
+  "type": {
+    "display-1": {
+      "font": "display",
+      "size": [
+        44,
+        96
+      ],
+      "weight": 800,
+      "lh": 1
+    },
+    "display-2": {
+      "font": "display",
+      "size": [
+        32,
+        60
+      ],
+      "weight": 800,
+      "lh": 1.05
+    },
+    "display-3": {
+      "font": "display",
+      "size": [
+        23,
+        32
+      ],
+      "weight": 700,
+      "lh": 1.15
+    },
+    "title": {
+      "font": "text",
+      "size": [
+        19,
+        22
+      ],
+      "weight": 700,
+      "lh": 1.3
+    },
+    "subhead": {
+      "font": "text",
+      "size": [
+        19,
+        23
+      ],
+      "weight": 500,
+      "lh": 1.4
+    },
+    "lead": {
+      "font": "text",
+      "size": [
+        18,
+        21
+      ],
+      "weight": 400,
+      "lh": 1.55
+    },
+    "body": {
+      "font": "text",
+      "size": [
+        17,
+        18
+      ],
+      "weight": 400,
+      "lh": 1.65
+    },
+    "small": {
+      "font": "text",
+      "size": [
+        15,
+        15
+      ],
+      "weight": 400,
+      "lh": 1.5
+    },
+    "label": {
+      "font": "text",
+      "size": [
+        14,
+        14
+      ],
+      "weight": 700,
+      "lh": 1.2
+    }
+  },
+  "measure": {
+    "body": 58,
+    "lead": 42
+  },
+  "space": [
+    [
+      4,
+      4
+    ],
+    [
+      8,
+      8
+    ],
+    [
+      12,
+      12
+    ],
+    [
+      16,
+      16
+    ],
+    [
+      20,
+      24
+    ],
+    [
+      24,
+      32
+    ],
+    [
+      32,
+      44
+    ],
+    [
+      40,
+      60
+    ],
+    [
+      52,
+      88
+    ],
+    [
+      68,
+      116
+    ],
+    [
+      88,
+      148
+    ]
+  ],
+  "grid": {
+    "content": 1240,
+    "gutter": [
+      18,
+      40
+    ],
+    "gap": [
+      14,
+      24
+    ]
+  },
+  "shape": {
+    "r-sm": 8,
+    "r": 14,
+    "r-lg": 24
+  },
+  "motion": {
+    "ease": "cubic-bezier(.2,.8,.2,1)",
+    "t": 200,
+    "t-slow": 380
+  }
+}

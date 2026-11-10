@@ -1,0 +1,230 @@
+{
+  "name": "quiet-retail",
+  "title": "יוקרה מונוכרומטית",
+  "status": "proven",
+  "provenance": "A shipped quiet-luxury retail site (tokens frozen 2026-09-24, approved by the client on catalog, product and home) and its composition spec. Roles the shipped site did not define are completed here and listed in `derived`; they are not proven.",
+  "register": "Quiet luxury retail. White ground, black type, grey only for labels and hairlines. One face across an extreme weight range: 300 for every large statement, 400 to read, 600 for tracked labels. No cards, no shadows, no radii; one short black rule is the only ornament.",
+  "fonts": {
+    "display": {
+      "family": "Assistant",
+      "weights": [
+        300
+      ]
+    },
+    "text": {
+      "family": "Assistant",
+      "weights": [
+        300,
+        400,
+        600
+      ]
+    }
+  },
+  "color": {
+    "ground": "#FFFFFF",
+    "ground-2": "#FFFFFF",
+    "tint": "#FAFAFA",
+    "mid": "#F0F0F0",
+    "line": "#E3E3E3",
+    "ink": "#111111",
+    "ink-2": "#3D3D3D",
+    "ink-3": "#737373",
+    "accent": "#111111",
+    "accent-deep": "#111111",
+    "accent-tint": "#FAFAFA",
+    "action": "#111111",
+    "on-action": "#FFFFFF",
+    "band": "#111111",
+    "on-band": "#FFFFFF",
+    "on-band-2": "rgba(255,255,255,.72)"
+  },
+  "allow": {
+    "ground": [
+      "ink",
+      "ink-2",
+      "ink-3"
+    ],
+    "ground-2": [
+      "ink",
+      "ink-2",
+      "ink-3"
+    ],
+    "tint": [
+      "ink",
+      "ink-2",
+      "ink-3"
+    ],
+    "mid": [
+      "ink",
+      "ink-2"
+    ],
+    "action": [
+      "on-action"
+    ],
+    "band": [
+      "on-band",
+      "on-band-2"
+    ]
+  },
+  "type": {
+    "display-1": {
+      "font": "display",
+      "size": [
+        36,
+        56
+      ],
+      "weight": 300,
+      "lh": 1.1
+    },
+    "display-2": {
+      "font": "display",
+      "size": [
+        26,
+        32
+      ],
+      "weight": 300,
+      "lh": 1.2
+    },
+    "display-3": {
+      "font": "display",
+      "size": [
+        21,
+        24
+      ],
+      "weight": 300,
+      "lh": 1.25
+    },
+    "title": {
+      "font": "text",
+      "size": [
+        17,
+        19
+      ],
+      "weight": 600,
+      "lh": 1.3
+    },
+    "subhead": {
+      "font": "text",
+      "size": [
+        19,
+        21
+      ],
+      "weight": 400,
+      "lh": 1.4
+    },
+    "lead": {
+      "font": "text",
+      "size": [
+        19,
+        22
+      ],
+      "weight": 300,
+      "lh": 1.5
+    },
+    "body": {
+      "font": "text",
+      "size": [
+        18,
+        19
+      ],
+      "weight": 400,
+      "lh": 1.55
+    },
+    "small": {
+      "font": "text",
+      "size": [
+        14,
+        15
+      ],
+      "weight": 400,
+      "lh": 1.5
+    },
+    "label": {
+      "font": "text",
+      "size": [
+        13,
+        13
+      ],
+      "weight": 600,
+      "lh": 1.3,
+      "tracking": 0.06
+    }
+  },
+  "measure": {
+    "body": 64,
+    "lead": 46
+  },
+  "space": [
+    [
+      4,
+      4
+    ],
+    [
+      8,
+      8
+    ],
+    [
+      12,
+      12
+    ],
+    [
+      16,
+      16
+    ],
+    [
+      24,
+      24
+    ],
+    [
+      32,
+      32
+    ],
+    [
+      40,
+      48
+    ],
+    [
+      48,
+      64
+    ],
+    [
+      64,
+      96
+    ],
+    [
+      96,
+      128
+    ],
+    [
+      120,
+      160
+    ]
+  ],
+  "grid": {
+    "content": 1280,
+    "gutter": [
+      16,
+      40
+    ],
+    "gap": [
+      12,
+      24
+    ]
+  },
+  "shape": {
+    "r-sm": 0,
+    "r": 0,
+    "r-lg": 0
+  },
+  "motion": {
+    "ease": "cubic-bezier(.2,.7,.2,1)",
+    "t": 320,
+    "t-slow": 600
+  },
+  "derived": [
+    "color.mid, color.ink-2, color.on-band-2: the shipped site has only ink #111 and mute #737373",
+    "type.display-3, type.title, type.subhead, type.lead, type.small: the shipped site's roles are page title (display-1), statement (display-2), body, tile, label, caption",
+    "space.s11 (160): the shipped site's scale stops at 128",
+    "measure.body 64 Hebrew characters: the shipped site had --prose: 62ch, which is ~72 Hebrew characters in Assistant (fonts.json perCh 1.154), over the canon's ~65"
+  ]
+}

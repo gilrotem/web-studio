@@ -96,9 +96,12 @@ Body / text: `Assistant` 200–800 · `Heebo` 100–900 · `Noto Sans Hebrew` 10
 `IBM Plex Sans Hebrew` 100–700 · `Rubik` 300–900 · `Alef` 400/700.
 
 Rules: two families maximum, or one across an extreme weight range; display
-tight (line-height 1.0–1.15); body loose (1.6–1.75) and never wider than ~65
-Hebrew characters; body never under 16px. No letter-spacing on Hebrew running
-text. Never Inter, Poppins or Montserrat for display.
+tight (line-height 1.0–1.25); reading text loose (1.5–1.8) and never wider than
+~65 Hebrew characters, counted in characters, not `ch`; body never under 16px.
+No letter-spacing on Hebrew running text. Never Inter, Poppins or Montserrat for
+display. The numbers are the canon's (`system-packs` skill, `CANON.md`), aligned
+2026-09-27 to the two systems that shipped: one sat at display-3 1.2 and body
+1.65, the other at body 1.55, both outside the earlier 1.0–1.15 / 1.6–1.75.
 
 **RTL craft, always:** logical properties (`margin-inline`, `padding-inline`,
 `inset-inline`); mirror icons that encode direction (arrows, chevrons), never

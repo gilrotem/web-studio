@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{PACK_TITLE}} · specimen</title>
+<!--
+  The system-packs specimen. Written ONLY against the grammar in CANON.md, so
+  every pack re-skins it without touching this file: the skeleton stays, the
+  skin changes. cli.mjs proof <pack> fills {{FONTS}}, {{TOKENS}}, {{PACK_*}}.
+  Copy is a fictional firm; it exists to exercise every role, not to be used.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="{{FONTS}}">
+<link rel="stylesheet" href="{{TOKENS}}">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :where(h1, h2, h3, h4, p, ul, ol, figure, blockquote, dl, dd) { margin: 0; }
+  :root { font-synthesis: none; }
+  body {
+    margin: 0; background: var(--ground); color: var(--ink);
+    font: var(--w-body) var(--fs-body)/var(--lh-body) var(--ff-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  em { font-style: normal; font-weight: var(--w-subhead); }
+  a { color: inherit; }
+  .wrap { inline-size: min(var(--content), 100% - 2 * var(--gutter)); margin-inline: auto; }
+
+  /* roles, read whole */
+  .display-1 { font: var(--w-display-1) var(--fs-display-1)/var(--lh-display-1) var(--ff-display-1); text-wrap: balance; }
+  .display-2 { font: var(--w-display-2) var(--fs-display-2)/var(--lh-display-2) var(--ff-display-2); text-wrap: balance; }
+  .display-3 { font: var(--w-display-3) var(--fs-display-3)/var(--lh-display-3) var(--ff-display-3); text-wrap: balance; }
+  .title     { font: var(--w-title) var(--fs-title)/var(--lh-title) var(--ff-title); text-wrap: balance; }
+  .subhead   { font: var(--w-subhead) var(--fs-subhead)/var(--lh-subhead) var(--ff-subhead); text-wrap: balance; }
+  .lead      { font: var(--w-lead) var(--fs-lead)/var(--lh-lead) var(--ff-lead); text-wrap: pretty; max-inline-size: var(--measure-lead); }
+  .body      { font: var(--w-body) var(--fs-body)/var(--lh-body) var(--ff-body); text-wrap: pretty; max-inline-size: var(--measure-body); }
+  .small     { font: var(--w-small) var(--fs-small)/var(--lh-small) var(--ff-small); text-wrap: pretty; }
+  .label     { font: var(--w-label) var(--fs-label)/var(--lh-label) var(--ff-label); letter-spacing: var(--ls-label, 0); }
+
+  /* coupling (CANON 6) */
+  .label + .display-1, .label + .display-2, .label + .display-3 { margin-block-start: var(--s4); }
+  .display-1 + .lead, .display-1 + .subhead { margin-block-start: var(--s6); }
+  .display-2 + .lead, .display-2 + .subhead { margin-block-start: var(--s5); }
+  .display-3 + .body, .title + .body { margin-block-start: var(--s3); }
+  .subhead + .lead, .subhead + .body { margin-block-start: var(--s4); }
+  .lead + .actions { margin-block-start: var(--s7); }
+  .body + .body { margin-block-start: var(--s5); }
+  .prose > * + .display-3, .prose > * + .title { margin-block-start: var(--s7); }
+  .prose > .display-3 + .body, .prose > .title + .body { margin-block-start: var(--s3); }
+  .prose li + li { margin-block-start: var(--s3); }
+  figure > figcaption { margin-block-start: var(--s3); }
+
+  /* header */
+  .head { border-block-end: 1px solid var(--line); background: var(--ground); }
+  .head .wrap { display: flex; align-items: center; gap: var(--s6); min-block-size: calc(var(--s9) * .8); }
+  .mark { font: var(--w-display-1) var(--fs-title)/1 var(--font-display); text-decoration: none; }
+  .mark b { color: var(--accent-deep); font-weight: inherit; }
+  .nav { display: flex; gap: var(--s6); margin-inline-start: auto; list-style: none; padding: 0; }
+  .nav a { text-decoration: none; color: var(--ink-2); font: var(--w-small) var(--fs-small)/1 var(--ff-small); }
+
+  .btn { display: inline-flex; align-items: center; gap: var(--s2); padding: var(--s3) var(--s6); border-radius: var(--r);
+    font: var(--w-title) var(--fs-small)/var(--lh-label) var(--font-text); text-decoration: none; border: 1px solid transparent;
+    transition: background var(--t) var(--ease), color var(--t) var(--ease); }
+  .btn-primary { background: var(--action); color: var(--on-action); }
+  .btn-ghost { border-color: var(--ink); color: var(--ink); }
+  .btn:focus-visible { outline: 2px solid var(--action); outline-offset: 3px; }
+  .actions { display: flex; flex-wrap: wrap; gap: var(--s4); }
+
+  /* hero */
+  .hero { padding-block: var(--s10) var(--s9); }
+  .hero .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--gap); align-items: end; }
+  .hero .text { grid-column: 1 / span 8; }
+  .hero .aside { grid-column: 10 / span 3; border-inline-start: 2px solid var(--accent); padding-inline-start: var(--s5); }
+  .hero .label { color: var(--accent-deep); }
+  .hero .note { margin-block-start: var(--s5); color: var(--ink-2); }
+  .figure-num { font: var(--w-display-2) var(--fs-display-2)/1 var(--ff-display-2); }
+
+  /* opener + services on tint */
+  .services { background: var(--tint); padding-block: var(--s9); }
+  .services .label { color: var(--ink-2); }
+  .cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s7) var(--gap); margin-block-start: var(--s8); }
+  .cols article { border-block-start: 1px solid var(--ink); padding-block-start: var(--s5); }
+  .cols .more { display: inline-block; margin-block-start: var(--s4); color: var(--ink); text-underline-offset: 4px; }
+
+  /* band */
+  .band { background: var(--band); color: var(--on-band); padding-block: var(--s9); }
+  .band .display-2 { font-weight: calc(var(--w-display-2) - 100); }
+  .band .lead { color: var(--on-band-2); }
+  .band .btn-primary { background: var(--ground); color: var(--ink); }
+
+  /* article */
+  .article { padding-block: var(--s10); }
+  .article .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--gap); }
+  .article .meta { grid-column: 1 / span 3; }
+  .article .meta .label { color: var(--accent-deep); }
+  .article .meta .small { color: var(--ink-2); margin-block-start: var(--s3); }
+  .prose { grid-column: 4 / span 7; }
+  .prose ul { padding-inline-start: var(--s5); }
+  .prose blockquote { border-inline-start: 2px solid var(--accent); padding-inline-start: var(--s5); margin-block: var(--s7); }
+  .prose figcaption { color: var(--ink-3); }
+
+  /* faq */
+  .faq { background: var(--ground-2); padding-block: var(--s9); border-block: 1px solid var(--line); }
+  .faq dl { margin-block-start: var(--s7); max-inline-size: calc(var(--measure-body) + var(--s9)); }
+  .faq dt { padding-block-start: var(--s5); border-block-start: 1px solid var(--line); }
+  .faq dd { padding-block: var(--s3) var(--s5); color: var(--ink-2); }
+
+  /* form */
+  .contact { padding-block: var(--s9); }
+  .contact .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: var(--gap); }
+  .contact .intro { grid-column: 1 / span 5; }
+  .contact form { grid-column: 7 / span 6; display: grid; gap: var(--s5); }
+  .field { display: grid; gap: var(--s2); }
+  .field .label { color: var(--ink); }
+  .field input, .field textarea { font: var(--w-body) var(--fs-body)/var(--lh-title) var(--font-text); color: var(--ink); background: var(--ground-2);
+    border: 1px solid var(--line); border-radius: var(--r-sm); padding: var(--s3) var(--s4); }
+  .field input:focus-visible, .field textarea:focus-visible { outline: 2px solid var(--action); outline-offset: 1px; border-color: var(--action); }
+  .hint { color: var(--ink-2); }
+
+  /* footer */
+  .foot { background: var(--band); color: var(--on-band-2); padding-block: var(--s8) var(--s6); }
+  .foot .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap); }
+  .foot .label { color: var(--on-band); }
+  .foot ul { list-style: none; padding: 0; margin-block-start: var(--s3); display: grid; gap: var(--s2); }
+  .foot a { text-decoration: none; }
+  .foot .base { margin-block-start: var(--s7); padding-block-start: var(--s5); border-block-start: 1px solid rgba(255,255,255,.14); display: flex; justify-content: space-between; gap: var(--s5); }
+
+  @media (max-width: 767px) {
+    .nav { display: none; }
+    .hero .text, .hero .aside, .article .meta, .prose, .contact .intro, .contact form { grid-column: 1 / -1; }
+    .hero .aside { margin-block-start: var(--s7); }
+    .cols { grid-template-columns: 1fr; }
+    .foot .grid { grid-template-columns: 1fr 1fr; }
+    .foot .base { flex-direction: column; }
+  }
+  @media (prefers-reduced-motion: reduce) { .btn { transition: none; } }
+</style>
+</head>
+<body>
+
+<header class="head">
+  <div class="wrap">
+    <a class="mark" href="#">לוי <b>&</b> שחר</a>
+    <ul class="nav">
+      <li><a href="#services">תחומי עיסוק</a></li>
+      <li><a href="#guide">מדריכים</a></li>
+      <li><a href="#faq">שאלות נפוצות</a></li>
+      <li><a href="#contact">צרו קשר</a></li>
+    </ul>
+    <a class="btn btn-primary" href="#contact">קבעו שיחת היכרות</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="wrap grid">
+      <div class="text">
+        <p class="label">משרד לשמאות ונדל״ן · מאז 2004</p>
+        <h1 class="display-1">שווי אמיתי לנכס שלכם, במסמך שמחזיק בכל ערכאה</h1>
+        <p class="lead">אנחנו מכינים שומות מקרקעין לבתי משפט, לבנקים ולמשפחות שמחלקות ירושה, עם מחיר סגור מראש ולוח זמנים שנקבע בשיחה הראשונה.</p>
+        <div class="actions">
+          <a class="btn btn-primary" href="#contact">קבעו שיחת היכרות</a>
+          <a class="btn btn-ghost" href="#services">מה אנחנו עושים</a>
+        </div>
+        <p class="small note">או התקשרו עכשיו: <bdi dir="ltr">03-555-0142</bdi>, ימים א׳–ה׳ <bdi dir="ltr">08:30–18:00</bdi></p>
+      </div>
+      <aside class="aside">
+        <p class="figure-num"><bdi dir="ltr">2,400+</bdi></p>
+        <p class="small">שומות שהוגשו מאז 2004, בלי שומה אחת שנפסלה על הליך.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="services" id="services">
+    <div class="wrap">
+      <p class="label">תחומי עיסוק</p>
+      <h2 class="display-2">שלושה סוגי עבודה, תקן מקצועי אחד</h2>
+      <p class="subhead">כל שומה נכתבת כך שגם הצד השני יוכל לבדוק אותה, שורה אחר שורה.</p>
+      <div class="cols">
+        <article>
+          <h3 class="display-3">שומה לבית משפט</h3>
+          <p class="body">חוות דעת שמאית לפי תקנות סדר הדין, כולל הופעה לחקירה נגדית. אנחנו כותבים אותה כאילו השופט יקרא כל מספר.</p>
+          <a class="more label" href="#">איך זה עובד</a>
+        </article>
+        <article>
+          <h3 class="display-3">שומה לבנק</h3>
+          <p class="body">הערכת שווי לצורך משכנתא או מימון, בפורמט שהבנקים מקבלים, עם ביקור בנכס תוך שלושה ימי עבודה.</p>
+          <a class="more label" href="#">רשימת מסמכים</a>
+        </article>
+        <article>
+          <h3 class="display-3">חלוקת ירושה</h3>
+          <p class="body">שומה מוסכמת לכמה יורשים, עם פגישה משותפת אחת שבה כל שאלה נשאלת ונענית מול כולם.</p>
+          <a class="more label" href="#">שאלות שכדאי לשאול</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <h2 class="display-2">שומה אחת. תשובה אחת. בלי הפתעות בסוף.</h2>
+      <p class="lead">המחיר נקבע לפני שמתחילים, והוא לא משתנה גם אם העבודה מתארכת. זה כתוב בהצעה, ומופיע שוב בחשבונית.</p>
+      <div class="actions"><a class="btn btn-primary" href="#contact">בקשו הצעת מחיר</a></div>
+    </div>
+  </section>
+
+  <section class="article" id="guide">
+    <div class="wrap grid">
+      <div class="meta">
+        <p class="label">מדריך</p>
+        <p class="small">עודכן ב־<bdi dir="ltr">12.09.2026</bdi> · 6 דקות קריאה</p>
+      </div>
+      <div class="prose">
+        <h2 class="display-2">מה קורה בין ההזמנה לבין השומה החתומה</h2>
+        <p class="lead">רוב הלקוחות שלנו עושים את זה פעם אחת בחיים. לכן כתבנו כאן את כל השלבים, כולל אלה שבדרך כלל לא מספרים עליהם.</p>
+        <h3 class="display-3">הביקור בנכס</h3>
+        <p class="body">הביקור נמשך בין חצי שעה לשעה. אנחנו מודדים, מצלמים ובודקים את מה שלא מופיע בתוכניות: תוספות בנייה, שימושים חורגים ומצב התחזוקה. כדאי שמישהו שמכיר את הנכס יהיה שם, כי שאלה שנענית במקום חוסכת שבוע של התכתבות.</p>
+        <p class="body">אחרי הביקור אנחנו מזמינים את המסמכים מהרשויות. זה השלב שלוקח הכי הרבה זמן, והוא לא תלוי בנו, אבל אנחנו מעדכנים אתכם בכל פעם שמסמך מגיע.</p>
+        <blockquote><p class="subhead">״השומה טובה כמו המסמך הכי חלש שהיא נשענת עליו. לכן אנחנו מתחילים מהמסמכים.״</p></blockquote>
+        <h3 class="title">מה צריך להכין מראש</h3>
+        <ul class="body">
+          <li>נסח טאבו עדכני, או אישור זכויות מהחברה המשכנת.</li>
+          <li>היתר הבנייה והתוכנית המאושרת, אם יש לכם אותם.</li>
+          <li>כל חוזה שנחתם על הנכס בחמש השנים האחרונות.</li>
+        </ul>
+        <figure>
+          <p class="body">הזמן הממוצע מהביקור ועד שומה חתומה עמד בשנה האחרונה על 11 ימי עבודה.</p>
+          <figcaption class="small">נתוני המשרד, ינואר–אוגוסט 2026, 214 שומות.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq" id="faq">
+    <div class="wrap">
+      <p class="label">שאלות נפוצות</p>
+      <h2 class="display-2">מה שואלים אותנו לפני שמתחילים</h2>
+      <dl>
+        <dt class="title">כמה עולה שומה?</dt>
+        <dd class="body">דירה רגילה לבנק מתחילה ב־<bdi dir="ltr">1,800&nbsp;₪</bdi> לפני מע״מ. שומה לבית משפט מתומחרת לפי היקף התיק, והמחיר נסגר לפני שמתחילים.</dd>
+        <dt class="title">האם השומה שלכם מחייבת את הצד השני?</dt>
+        <dd class="body">לא. היא חוות דעת מקצועית. אבל כשהיא בנויה נכון, הצד השני מתקשה לסתור אותה, וזה מה שמקצר את הדיון.</dd>
+        <dt class="title">אפשר לקבל טיוטה לפני החתימה?</dt>
+        <dd class="body">כן. בשומות לבית משפט ולחלוקת ירושה אנחנו שולחים טיוטה ומחכים להערות לפני שהמסמך נחתם.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="wrap grid">
+      <div class="intro">
+        <p class="label">צרו קשר</p>
+        <h2 class="display-2">ספרו לנו על הנכס</h2>
+        <p class="lead">נחזור אליכם עוד היום עם הערכת זמן ומחיר. בלי התחייבות.</p>
+      </div>
+      <form onsubmit="return false">
+        <label class="field"><span class="label">שם מלא</span><input type="text" autocomplete="name"></label>
+        <label class="field"><span class="label">טלפון</span><input type="tel" dir="ltr" autocomplete="tel"></label>
+        <label class="field"><span class="label">כתובת הנכס וסוג השומה</span><textarea rows="3"></textarea></label>
+        <p class="small hint">נשתמש בפרטים רק כדי לחזור אליכם.</p>
+        <div><button class="btn btn-primary" type="submit">שליחה וקבלת הצעה</button></div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="grid">
+      <div><p class="label">המשרד</p><ul class="small"><li>רחוב הברזל 30, תל אביב</li><li><bdi dir="ltr">03-555-0142</bdi></li><li><bdi dir="ltr">office@levi-shahar.example</bdi></li></ul></div>
+      <div><p class="label">תחומים</p><ul class="small"><li><a href="#">בית משפט</a></li><li><a href="#">בנקים</a></li><li><a href="#">ירושות</a></li></ul></div>
+      <div><p class="label">מידע</p><ul class="small"><li><a href="#">מדריכים</a></li><li><a href="#">שאלות נפוצות</a></li><li><a href="#">נגישות</a></li></ul></div>
+      <div><p class="label">שעות</p><ul class="small"><li>א׳–ה׳ <bdi dir="ltr">08:30–18:00</bdi></li><li>ו׳ בתיאום מראש</li></ul></div>
+    </div>
+    <div class="base small"><span>© 2026 לוי ושחר, שמאות מקרקעין</span><span>{{PACK_NAME}} · {{PACK_STATUS}}</span></div>
+  </div>
+</footer>
+
+</body>
+</html>

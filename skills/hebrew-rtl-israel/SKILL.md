@@ -36,8 +36,8 @@ Graphik, Publico), AlefAlefAlef (Ploni, Almoni, Anomalia, Mugrabi; web licence p
 request), Typotheque (Greta Sans and Text Hebrew; webfont at 20% of the desktop-and-web price).
 No foundry publishes a web price list: budget it as a quote item.
 **Sizing:** Hebrew has one ascender (lamed) and few descenders, so it reads smaller than Latin
-at the same nominal size. Body 17–19px, line-height 1.6–1.7, measure 55–65 Hebrew characters;
-display line-height 1.0–1.15; body in regular or medium, not light (horizontals thin out on
+at the same nominal size. Body 17–19px, reading line-height 1.5–1.8, measure 55–65 Hebrew characters;
+display line-height 1.0–1.25 (the canon: `system-packs`); body in regular or medium, not light (horizontals thin out on
 screen). Two families maximum, or one across an extreme weight range; serif carries display only
 and is never mixed with sans in one line. Digits and Latin inside Hebrew: a face whose digits were
 drawn to Hebrew height (Fontef, AlefAlefAlef), or `:lang(en) { font-size: .95em }` on isolated

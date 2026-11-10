@@ -1,0 +1,225 @@
+{
+  "name": "editorial",
+  "title": "מערכתי — סמכות שקטה",
+  "status": "candidate",
+  "provenance": "New, 26/9/2026. Built on the institutional pack's method; face pairing from its comparison round (Noto Serif Hebrew was the one free Hebrew serif with a real weight range). Not yet proven on a project.",
+  "register": "Professional services where trust is the product: law, appraisal, accounting, consulting. A light serif for statements, a humanist sans to read; paper ground, blue-black ink, oxblood only as a mark.",
+  "fonts": {
+    "display": {
+      "family": "Noto Serif Hebrew",
+      "weights": [
+        500,
+        600
+      ]
+    },
+    "text": {
+      "family": "Assistant",
+      "weights": [
+        400,
+        600
+      ]
+    }
+  },
+  "color": {
+    "ground": "#F7F6F2",
+    "ground-2": "#FFFFFF",
+    "tint": "#EEECE5",
+    "mid": "#E2DED3",
+    "line": "#D8D3C7",
+    "ink": "#1B1F27",
+    "ink-2": "#464B55",
+    "ink-3": "#676C75",
+    "accent": "#8C2F2B",
+    "accent-deep": "#8C2F2B",
+    "accent-tint": "#F2E4E1",
+    "action": "#1B2A41",
+    "on-action": "#FFFFFF",
+    "band": "#1B2A41",
+    "on-band": "#F7F6F2",
+    "on-band-2": "rgba(247,246,242,.78)"
+  },
+  "allow": {
+    "ground": [
+      "ink",
+      "ink-2",
+      "ink-3",
+      "accent-deep"
+    ],
+    "ground-2": [
+      "ink",
+      "ink-2",
+      "ink-3",
+      "accent-deep"
+    ],
+    "tint": [
+      "ink",
+      "ink-2",
+      "accent-deep"
+    ],
+    "mid": [
+      "ink",
+      "ink-2"
+    ],
+    "action": [
+      "on-action"
+    ],
+    "band": [
+      "on-band",
+      "on-band-2"
+    ]
+  },
+  "type": {
+    "display-1": {
+      "font": "display",
+      "size": [
+        38,
+        76
+      ],
+      "weight": 500,
+      "lh": 1.12
+    },
+    "display-2": {
+      "font": "display",
+      "size": [
+        30,
+        48
+      ],
+      "weight": 500,
+      "lh": 1.15
+    },
+    "display-3": {
+      "font": "display",
+      "size": [
+        23,
+        30
+      ],
+      "weight": 600,
+      "lh": 1.25
+    },
+    "title": {
+      "font": "display",
+      "size": [
+        19,
+        21
+      ],
+      "weight": 600,
+      "lh": 1.35
+    },
+    "subhead": {
+      "font": "text",
+      "size": [
+        19,
+        22
+      ],
+      "weight": 600,
+      "lh": 1.4
+    },
+    "lead": {
+      "font": "text",
+      "size": [
+        18,
+        20
+      ],
+      "weight": 400,
+      "lh": 1.65
+    },
+    "body": {
+      "font": "text",
+      "size": [
+        17,
+        18
+      ],
+      "weight": 400,
+      "lh": 1.7
+    },
+    "small": {
+      "font": "text",
+      "size": [
+        15,
+        15.5
+      ],
+      "weight": 400,
+      "lh": 1.55
+    },
+    "label": {
+      "font": "text",
+      "size": [
+        13.5,
+        14
+      ],
+      "weight": 600,
+      "lh": 1.3
+    }
+  },
+  "measure": {
+    "body": 60,
+    "lead": 46
+  },
+  "space": [
+    [
+      4,
+      4
+    ],
+    [
+      8,
+      8
+    ],
+    [
+      12,
+      12
+    ],
+    [
+      16,
+      16
+    ],
+    [
+      20,
+      24
+    ],
+    [
+      24,
+      32
+    ],
+    [
+      32,
+      48
+    ],
+    [
+      44,
+      72
+    ],
+    [
+      64,
+      104
+    ],
+    [
+      80,
+      136
+    ],
+    [
+      104,
+      176
+    ]
+  ],
+  "grid": {
+    "content": 1160,
+    "gutter": [
+      20,
+      48
+    ],
+    "gap": [
+      16,
+      28
+    ]
+  },
+  "shape": {
+    "r-sm": 2,
+    "r": 3,
+    "r-lg": 4
+  },
+  "motion": {
+    "ease": "cubic-bezier(.25,.6,.2,1)",
+    "t": 240,
+    "t-slow": 480
+  }
+}
