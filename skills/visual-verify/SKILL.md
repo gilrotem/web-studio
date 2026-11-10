@@ -11,8 +11,8 @@ itself a defect.**
 
 | Mode | Used by | Question it asks | Ends when |
 |---|---|---|---|
-| **REFINE** | PAGE, SITE, SYSTEM, REDESIGN | "What is the weakest thing here?" | The Art Director stops it |
-| **FIDELITY** | PORT | "Does this match the source?" | The deviation table is clean |
+| **REFINE** | every design job: a site, a redesign, a page | "What is the weakest thing here?" | The builder would hand it to the jury |
+| **FIDELITY** | reproducing a source exactly | "Does this match the source?" | The deviation table is clean |
 
 V1 had only the second one, and applied it to generative work. A pass/fail gate
 cannot make a page better — it can only confirm a page is not wrong. That is why
@@ -35,12 +35,46 @@ A screenshot taken without this is not evidence; it is a false report.
 title and `innerWidth` — before trusting it. A shared browser can be navigated
 or resized by another agent between your navigate and your screenshot.
 
+## The measured check — `scripts/verify.mjs shoot`
+
+One command does all of the above and measures what the eye misses. Run it from
+the project root (Playwright resolved from the project):
+
+```bash
+node ${CLAUDE_SKILL_DIR}/scripts/verify.mjs shoot design/build/index.html            # 1440 + 390, settled, audited
+node ${CLAUDE_SKILL_DIR}/scripts/verify.mjs shoot <page> --reduced                     # + reduced-motion captures
+node ${CLAUDE_SKILL_DIR}/scripts/verify.mjs selftest                                   # 28 checks against a known page
+```
+
+- **Settled capture**: fonts, a stepped scroll so every observer fires, lazy
+  images, an instant return to the top; captured full page at `scrollY = 0`.
+- **Evidence or not**: exit 3 (`evidence: suspect`) when a stylesheet, font,
+  image or script failed to load, the page threw, or content is still invisible
+  after the scroll (`--allow-hidden "<why>"` for a carousel or tabs).
+- **Measured contrast**, WCAG AA on the rendered page: 4.5:1 body, 3:1 large
+  (24px+, or 18.66px+ at 700+). Flat colours are computed through alpha and
+  opacity. Text over a photograph, gradient, SVG or video is **measured from the
+  pixels** under its lines (text hidden, 10th percentile of per-pixel
+  contrast), and gradient-filled text by diffing pixels with and without it.
+  What cannot be sampled is reported UNVERIFIABLE and is never a pass. Results
+  within ~0.1 of a threshold are a judgement call.
+- Also caught: body under 16px, lines over 70 characters (`60ch` is ~74 Hebrew
+  characters, not 60), gradient text, and a numeric range joined by a dash in
+  RTL text without LTR isolation (it renders reversed). Exit 2 on any failure.
+
+Output: `design/review/verify/<stamp>-<tag>/` (captures and `run.json`), one line
+per run in `design/review/verify/runs.jsonl`. Keep the runs that mattered with
+the stage's evidence; delete the rest. Not modelled: text-shadow and stroke,
+blend modes, filters, opacity on an ancestor above the background's provider.
+
 ---
 
 ## REFINE mode — the taste loop
 
-The purpose is improvement, not approval. Run it until the Art Director says
-stop, not until some criterion is met.
+The purpose is improvement, not approval. It is the builder's own loop between
+two locks, run privately: it ends when the builder would put the piece in front
+of the jury, not when a checklist clears. The Art Director sees the piece only
+after the jury, at the lock.
 
 1. **Render** the page or section at 1440. Full page, not a viewport crop.
 2. **Look before reading.** Take in the screenshot as a whole first. First
@@ -58,15 +92,15 @@ stop, not until some criterion is met.
 Every few passes, run the `signature` review checklist — especially "is the
 declared signature actually there, and is it the only bold thing?"
 
-**Escalate, do not grind:** after three passes on the same weakness with no
-improvement, stop and show the Art Director the shots side by side with your
-reading of why it is stuck.
+**Do not grind:** after three passes on the same weakness with no improvement,
+stop and hand the piece to the jury with the shots side by side and your
+reading of why it is stuck. The jury's ranked fix list decides the next move.
 
 ---
 
 ## FIDELITY mode — the blocking gate
 
-Used by PORT, where the source is the specification.
+Used when a source must be reproduced exactly, where the source is the specification.
 
 1. Screenshot the build at 1440. When the batch is done, also at 390.
 2. Open the source reference for the same section, side by side.
